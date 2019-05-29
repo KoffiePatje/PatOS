@@ -43,7 +43,7 @@ local PVector3 = {
 		return (self.x * other.x) + (self.y * other.y) + (self.z * other.z)
 	end,
 	
-	Cross = Cross(self, other)
+	Cross = function(self, other)
 		return PVector3.New(
 			(self.y * other.z) - (self.z * other.y),
 			(self.z * other.x) - (self.x * other.z),

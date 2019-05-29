@@ -6,4 +6,4 @@ API.Load("PVector3")
 --local myTurtle = Entity.New()
 local boxSize = PVector3.New(1, 1, 1)
 
-print(boxSize.ToString())
+print(boxSize:ToString())
