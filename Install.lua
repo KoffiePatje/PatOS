@@ -53,7 +53,8 @@ end
 
 local responseData = JSON.decode(response)
 
-for entry in responseData do
+for i=1, #responseData do
+	local entry = responseData[i]
 	if string.find(entry.name, '.lua') then
 		print(entry.name)
 	end
