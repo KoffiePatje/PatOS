@@ -13,7 +13,7 @@ function requestHttp(url)
 end
 
 -- Retrieve JSON parser
-local jsonStatus, jsonResponse = requestHttp(GITHUB_RAW_BASE .. 'KoffiePatje/PatOS/master/inc/JSON.lua').readAll()
+local jsonStatus, jsonResponse = requestHttp(GITHUB_RAW_BASE .. 'KoffiePatje/PatOS/master/inc/JSON.lua')
 if not (status == 200) then
 	print("Couldn't dowload JSON lib..")
 	shell.exit();
