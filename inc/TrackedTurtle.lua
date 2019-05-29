@@ -100,7 +100,13 @@ function New(startPosition, startRotation)
 		rotation = startRotation or PVector3.New(0, 0, 1),
 	}
 	setmetatable(trackedTurtle, TrackedTurtleMetatable)
-	return trackedTurtle;
+	return trackedTurtle
+end
+
+function FromTable(t) 
+	local trackedTurtle = t;
+	setmetatable(trackedTurtle, TrackedTurtleMetatable)
+	return trackedTurtle
 end
 
 

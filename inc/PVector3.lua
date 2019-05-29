@@ -93,7 +93,7 @@ local PVector3Metatable = {
 	__tostring = vector.ToString
 }
 
-function New( x, y, z )
+function New(x, y, z)
 	local v = {
 		x = tonumber(x) or 0,
 		y = tonumber(y) or 0,
@@ -101,6 +101,12 @@ function New( x, y, z )
 	}
 	setmetatable(v, PVector3Metatable)
 	return v
+end
+
+function FromTable(t) 
+	local v = t;
+	setmetatable(v, PVector3Metatable)
+	return v;
 end
 
 
