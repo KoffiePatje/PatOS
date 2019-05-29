@@ -4,11 +4,14 @@ PVector3 = {
 	z = 0
 }
 
-function PVector:New(x, y, z)
-	vector3 = {}
-	setmetatable(vector3, self)
+function PVector3:New(x, y, z)
+	v3 = {}
+	setmetatable(v3, self)
 	self.__index = self
-	return vector3
+	self.x = x or 0
+	self.y = y or 0
+	self.z = z or 0
+	return v3
 end
 
 function PVector3:Add(other)
