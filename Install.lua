@@ -19,7 +19,17 @@ if not (jsonStatus == 200) then
 	shell.exit();
 end
 
-loadstring(jsonResponse);
+-- Store JSON lib at temporary location
+if fs.exists('Temp') then
+    fs.makeDir('Temp')
+end
+
+local file = fs.open('Temp/JSON', 'w')
+file.write(jsonResponse);
+file.close();
+
+-- Load JSON API
+os.loadAPI('Temp/JSON');
 
 -- See what Repository we are targeting (aka read command line)
 local repo, tree = select(1, ...)
@@ -39,7 +49,7 @@ if not (status == 200) then
 	shell.exit();
 end
 
-local responseData = decode(response)
+local responseData = JSON.decode(response)
 
 for entry in responseData do
 	if string.find(entry.name, '.lua') then
