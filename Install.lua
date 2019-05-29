@@ -1,7 +1,7 @@
 -- PatOS - Github Install Script 
 
-local GITHUB_REST_API_BASE = "https://api.github.com/";
-local GITHUB_RAW_BASE = "https://raw.githubusercontent.com/"
+local GITHUB_REST_API_BASE = "https://api.github.com";
+local GITHUB_RAW_BASE = "https://raw.githubusercontent.com"
 
 -- Helper functions
 function requestHttp(url)
@@ -44,8 +44,8 @@ if not repo then
 	repo = 'KoffiePatje/PatOS'
 end
 
-print('Requesting file list from ' .. GITHUB_REST_API_BASE .. repo .. '/contents');
-local status, response = requestHttp(GITHUB_REST_API_BASE .. repo .. '/contents')
+print('Requesting file list from ' .. GITHUB_REST_API_BASE .. '/repos/' .. repo .. '/contents');
+local status, response = requestHttp(GITHUB_REST_API_BASE .. '/repos/' .. repo .. '/contents')
 if not (status == 200) then
 	print("Couldn't query github REST API") 
 	shell.exit();
