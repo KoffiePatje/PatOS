@@ -1,4 +1,4 @@
-os.loadAPI('PatOS/inc/PVector3')
+API.Load("PVector3")
 
 Entity = { 
 	position = PVector3.new(0, 0, 0),
