@@ -3,8 +3,8 @@ os.loadAPI('PatOS/API')
 API.Load("PVector3")
 API.Load("TrackedTurtle")
 
-local boxSize = PVector3.New(1, 1, 1)
-local myTurtle = TrackedTurtle.New()
+local boxSize = PVector3.New(3, 4, 5)
+local myTurtle = TrackedTurtle.New(PVector.New(3, 2, 1), PVector3.New(1, 0, 0))
 
 print(boxSize:ToString())
 print(myTurtle:ToString())
