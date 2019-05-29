@@ -33,7 +33,7 @@ function RecursiveGetGithubFiles(baseUrl)
 			else
 				print('Non-lua: ' .. entry.name)
 			end
-		else if entry.type == 'dir' then
+		elseif entry.type == 'dir' then
 			RecursiveGetGithubFiles(entry.url)
 		end
 	end 
