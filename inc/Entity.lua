@@ -91,4 +91,9 @@ function Entity:RotateTo(targetRotation)
 	while not (self.rotation.x == targetRotation.x and  self.rotation.z == target.rotation.z) do
 		local cross = self.rotation.Cross(targetRotation)
 		if cross.y >= 0 then 
+			self.RotateRight() 
+		else 
+			self.RotateLeft() 
+		end
+	end
 end
