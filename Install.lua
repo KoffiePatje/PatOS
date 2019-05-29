@@ -6,6 +6,8 @@ local GITHUB_RAW_BASE = "https://raw.githubusercontent.com"
 local GITHUB_TREE = 'master'
 local GITHUB_REPO = 'KoffiePatje/PatOS'
 
+local PROJECT_DIRECTORY = "PatOS"
+
 -- Helper functions
 function requestHttp(url)
 	local request = http.get(url)
@@ -29,15 +31,40 @@ function RecursiveGetGithubFiles(baseUrl)
 		local entry = responseData[i]
 		if entry.type == 'file' then 
 			if string.find(entry.name, '.lua') then
-				print(entry.name)
+				RetrieveGithubFile(entry)
 			else
-				print('Non-lua: ' .. entry.name)
+				print('Skipping non-lua file ' .. entry.name)
 			end
 		elseif entry.type == 'dir' then
 			RecursiveGetGithubFiles(entry.url)
 		end
 	end 
 end
+
+function RetrieveGithubFile(entry) 
+	local path = entry.path;
+	local downloadUrl = entry.download_url;
+	
+	local status, response = requestHttp(downloadUrl)
+	
+	if not (status == 200) then
+		print("Unable to retrieve file " .. path .. " from url: " .. downloadUrl)
+		return
+	end
+	
+	local savePath = PROJECT_DIRECTORY .. '/' .. path;
+	
+	if fs.exists(savePath) then 
+		fs.delete(savePath)
+	end
+	
+	local file = fs.open(savePath, "w")
+	file.write(response)
+	file.close()
+	
+	print('Succesfully retrieved ' .. path);
+end
+
 
 -- Retrieve JSON parser
 local jsonStatus, jsonResponse = requestHttp(GITHUB_RAW_BASE .. '/KoffiePatje/PatOS/master/inc/JSON.lua')
