@@ -8,3 +8,10 @@ local myTurtle = TrackedTurtle.New()
 
 print(boxSize:ToString())
 print(myTurtle:ToString())
+
+API.Load("Prefs")
+
+Prefs.Set("BoxSize", boxSize)
+Prefs.Set("Turtle", myTurtle)
+
+Prefs.Save("BoxMiner")
