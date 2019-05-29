@@ -13,11 +13,6 @@ function Entity:New()
 
 end
 
-function Entity:Mine(front, up, down) 
-	if front then 
-		turtle.dig()
-end
-
 --------------
 -- Movement --
 --------------
