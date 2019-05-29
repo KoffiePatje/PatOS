@@ -25,3 +25,4 @@ local storedTurtle2 = TrackedTurtle.FromTable(Prefs.Get("Turtle2"))
 
 print(storedBoxSize:ToString())
 print(storedTurtle:ToString())
+print(storedTurtle2:ToString())

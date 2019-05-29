@@ -95,7 +95,7 @@ local TrackedTurtleMetatable = {
 }
 
 function New(startPosition, startRotation)
-	trackedTurtle = {
+	local trackedTurtle = {
 		position = startPosition or PVector3.New(0, 0, 0),
 		rotation = startRotation or PVector3.New(0, 0, 1),
 	}
@@ -104,7 +104,7 @@ function New(startPosition, startRotation)
 end
 
 function FromTable(t) 
-	trackedTurtle = {
+	local trackedTurtle = {
 		position = t.position or PVector3.New(0, 0, 0),
 		rotation = t.rotation or PVector3.New(0, 0, 1)
 	}
