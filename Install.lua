@@ -52,7 +52,7 @@ function RetrieveGithubFile(entry)
 		return
 	end
 	
-	local savePath = PROJECT_DIRECTORY .. '/' .. path;
+	local savePath = PROJECT_DIRECTORY .. '/' .. GetFilePathWithoutExtension(path);
 	
 	if fs.exists(savePath) then 
 		fs.delete(savePath)
@@ -63,6 +63,16 @@ function RetrieveGithubFile(entry)
 	file.close()
 	
 	print('Succesfully retrieved ' .. path);
+end
+
+function GetFilePathWithoutExtension(filePath)
+	local i = nil;
+	
+	repeat
+		local i = string.find(filePath, '.', i, true)
+	until(i == nil)
+	
+	return string.sub(filePath, 0, i)
 end
 
 

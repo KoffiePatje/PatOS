@@ -1,4 +1,7 @@
--- PatOS - JSON (stolen)
+-------------------------------
+-- PatOS - JSON Parser Class --
+-------------------------------
+
 -- REF: http://www.computercraft.info/forums2/index.php?/topic/5854-json-api-v201-for-computercraft/
 
 ------------------------------------------------------------------ utils

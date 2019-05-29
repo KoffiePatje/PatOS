@@ -1,3 +1,7 @@
+---------------------------------------
+-- PatOS - Preferences Utility Class --
+---------------------------------------
+
 local preferencePath = 'PatOS/saves/%s/preferences.save'
 local t = {}
 
@@ -14,6 +18,7 @@ function get(name, value)
 end
 
 function save(name)
+	
 	local savePath = preferencePath.format(name)
 	local file = fs.open(savePath, 'w')
 	file.write(textutils.serialize(t))
