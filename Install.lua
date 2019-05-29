@@ -16,7 +16,6 @@ function requestHttp(url)
 end
 
 function RecursiveGetGithubFiles(baseUrl)
-	-- Retrieve directory listing from the Github REST API
 	local status, response = requestHttp(baseUrl)
 	
 	if not (status == 200) then
@@ -24,13 +23,16 @@ function RecursiveGetGithubFiles(baseUrl)
 		return
 	end
 	
-	
 	local responseData = JSON.decode(response)
 	
 	for i=1, #responseData do
 		local entry = responseData[i]
 		if entry.type == 'file' then 
-			print(entry.name)
+			if string.find(entry.name, '.lua')
+				print(entry.name)
+			else
+				print('Non-lua: ' .. entry.name)
+			end
 		else if entry.type == 'dir' then
 			RecursiveGetGithubFiles(entry.url)
 		end
