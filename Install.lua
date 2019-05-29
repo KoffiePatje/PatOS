@@ -66,13 +66,17 @@ function RetrieveGithubFile(entry)
 end
 
 function GetFilePathWithoutExtension(filePath)
-	local i = nil;
+	local lastDotIndex = string.len(filePath)
+	local i = -1;
 	
 	repeat
-		local i = string.find(filePath, '.', i, true)
+		i = string.find(filePath, '.', i + 1, true)
+		if not (i == nil) then 
+			lastDotIndex = i 
+		end
 	until(i == nil)
 	
-	return string.sub(filePath, 0, i)
+	return string.sub(filePath, 0, lastDotIndex)
 end
 
 
