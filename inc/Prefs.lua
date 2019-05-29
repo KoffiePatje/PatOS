@@ -15,22 +15,23 @@ function Set(name, value)
 	end
 end
 
-function Get(name, value)
+function Get(name)
 	return t[name]
 end
 
 function Save(name)
 	local savePath = preferencePath:format(name)
-	FileIO.WriteAllText(textutils.serialize(t), savePath);
+	
+	if not t == nil then 
+		FileIO.WriteAllText(textutils.serialize(t), savePath);
+	end
 end
 
-function Load(name) {
+function Load(name)
 	local loadPath = preferencePath:format(name)
 	local fileContent = FileIO.ReadAllText(loadPath)
 	
 	if not (fileContent == nil) and not (fileContent == "") then
 		t = textutils.unserialize(fileContent)
 	end
-}
-
-load()
+end
