@@ -109,6 +109,7 @@ function FromTable(t)
 		y = tonumber(t.y) or 0,
 		z = tonumber(t.z) or 0
 	}
+	setmetatable(v, nil)
 	setmetatable(v, PVector3Metatable)
 	return v;
 end
