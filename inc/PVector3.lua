@@ -11,13 +11,13 @@ function PVector:New(x, y, z)
 	return vector3
 end
 
-function PVector3:Add(PVector3 other)
+function PVector3:Add(other)
 	self.x += other.x
 	self.y += other.y
 	self.z += other.z
 end
 
-function PVector3:Sub(PVector3 other)
+function PVector3:Sub(other)
 	self.x -= other.x
 	self.y -= other.y
 	self.z -= other.z
@@ -29,11 +29,11 @@ function PVector3:Mul(scalar)
 	self.z *= scalar
 end
 
-function PVector3:Dot(PVector3 other)
+function PVector3:Dot(other)
 	return (self.x * other.x) + (self.y * other.y) + (self.z * other.z)
 end
 
-function PVector3:Cross(PVector3 other)
+function PVector3:Cross(other)
 	return PVector.New(
 		(self.y * other.z) - (self.z * other.y),
 		(self.z * other.x) - (self.x * other.z),
