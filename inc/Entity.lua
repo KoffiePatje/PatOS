@@ -30,19 +30,19 @@ local Entity = {
 	end,
 	
 	MoveTo = function(self, targetPosition)
-		while self:position.y < targetPosition.y do MoveUp() end
-		while self:position:.y > targetPosition.y do MoveDown() end
+		while self.position.y < targetPosition.y do self:MoveUp() end
+		while self.position:.y > targetPosition.y do self:MoveDown() end
 		
-		if not (self:position.x == targetPosition.x) then
+		if not (self.position.x == targetPosition.x) then
 			local direction = (PVector3.New(targetPosition.x, 0, 0) - PVector3.New(self.position.x, 0, 0)):Normalized()
-			RotateTo(direction)
-			while not (self.position.x == targetPosition.x) do MoveForward() end
+			self:RotateTo(direction)
+			while not (self.position.x == targetPosition.x) do self:MoveForward() end
 		end
 		
 		if not (self.position.z == target.position.z) then
 			local direction = (PVector3.New(0, 0, targetPosition.z) - PVector3.New(0, 0, self.position.z)):Normalized()
-			RotateTo(direction)
-			while not (self.position.z == target.position.z) do MoveForward() end
+			self:RotateTo(direction)
+			while not (self.position.z == target.position.z) do self:MoveForward() end
 		end
 	end,
 	
