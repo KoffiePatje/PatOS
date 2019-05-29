@@ -15,6 +15,7 @@ function requestHttp(url) {
 -- Retrieve JSON parser
 local jsonStatus, jsonResponse = requestHttp(GITHUB_RAW_BASE .. 'KoffiePatje/PatOS/master/inc/JSON.lua').readAll()
 if jsonStatus not 200 then
+	os.print("Couldn't dowload JSON lib..")
 	shell.exit();
 end
 
@@ -34,6 +35,7 @@ end
 
 local status, response = requestHttp(GITHUB_REST_API_BASE .. repo .. '/contents')
 if status not 200 then 
+	os.print("Couldn't query github REST API") 
 	shell.exit();
 end
 
