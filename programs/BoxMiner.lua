@@ -17,5 +17,11 @@ Prefs.Set("Turtle", myTurtle)
 Prefs.Save("BoxMiner")
 Prefs.Load("BoxMiner")
 
-print(Prefs.Get("BoxSize"))
-print(Prefs.Get("Turtle"))
+local storedBoxSize = Prefs.Get("BoxSize")
+local storedTurtle = Prefs.Get("Turtle")
+
+setmetatable(storedBoxSize, PVector3Metatable)
+setmetatable(storedTurtle, TrackedTurtleMetatable)
+
+print(storedBoxSize)
+print(storedTurtle)

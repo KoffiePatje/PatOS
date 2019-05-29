@@ -18,7 +18,7 @@ end
 function Save(name)
 	local savePath = preferencePath:format(name)
 	
-	if not t == nil then 
+	if not (t == nil) then 
 		FileIO.WriteAllText(textutils.serialize(t), savePath);
 	end
 end
