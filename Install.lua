@@ -61,5 +61,5 @@ file.close();
 os.loadAPI('Temp/JSON');
 
 -- Sync Github Directory
-SyncGitDirectory(GITHUB_REST_API_BASE .. '/repos/' .. GITHUB_REPO .. '/contents')
+RecursiveGetGithubFiles(GITHUB_REST_API_BASE .. '/repos/' .. GITHUB_REPO .. '/contents')
 
