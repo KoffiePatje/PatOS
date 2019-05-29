@@ -85,7 +85,7 @@ local Entity = {
 	-- Misc --
 	----------
 	ToString = function(self) 
-		return '[pos: ' .. self.position:ToString() .. ', rot: ' self.rotation:ToString() .. ']'
+		return '[pos: ' .. self.position:ToString() .. ', rot: ' .. self.rotation:ToString() .. ']'
 	end
 }
 
