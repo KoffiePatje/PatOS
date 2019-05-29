@@ -1,5 +1,3 @@
-os.loadAPI("PatOS/inc/Serialization");
-os.loadAPI("PatOS/inc/GUI");
 
 local state = {
 	position = vector.new(0, 0, 0),
