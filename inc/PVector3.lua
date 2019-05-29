@@ -1,3 +1,7 @@
+----------------------------
+-- PatOS - PVector3 Class --
+----------------------------
+
 local PVector3 = {
 	Add = function (self, other)
 		return PVector.New(

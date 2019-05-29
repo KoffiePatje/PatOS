@@ -27,12 +27,39 @@ os.loadAPI('PatOS/API')
 --print(storedTurtle:ToString())
 --print(storedTurtle2:ToString())
 
-
+API.Load("PVector3")
+API.Load("TrackedTurtle")
 API.Load("GPSUtil")
-local gpsSupported, myTurtle = GPSUtil.TryGetGPSTrackedTurtle(3)
-if gpsSupported then 
-	print('GPS supported, using global coordinate system!')
-else
-	print('GPS not Supported, using local coordinate system!')
+API.Load("Input")
+
+local gpsSupported = false
+
+function InitializeTurtle()
+	local gpsSupported, newTurtle = GPSUtil.TryGetGPSTrackedTurtle(3)
+	if gpsSupported then 
+		print('GPS supported, using global coordinate system!')
+	else
+		print('GPS not Supported, using local coordinate system!')
+	end
+	
+	return newTurtle
 end
 
+function GetBoxBounds() 
+	local number = nil
+	PVector3 bounds = PVector3.New(nil, nil, nil)
+	
+	print('x: ')
+	repeat bounds.x = Input.GetNumberInput() while (bounds.x == nil)
+	print('y: ')
+	repeat bounds.y = Input.GetNumberInput() while (bounds.y == nil)
+	print('z: ')
+	repeat bounds.z = Input.GetNumberInput() while (bounds.z == nil)
+	
+	return bounds
+end
+
+function Main()
+	local myTurtle = InitializeTurtle()
+	local boxBounds = GetBoxBounds()
+end
