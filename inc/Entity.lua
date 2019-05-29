@@ -1,8 +1,8 @@
 API.Load("PVector3")
 
 Entity = { 
-	position = PVector3.new(0, 0, 0),
-	rotation = PVector3.new(0, 0, 1),
+	position = PVector3.New(0, 0, 0),
+	rotation = PVector3.New(0, 0, 1),
 }
 
 function Entity:New()

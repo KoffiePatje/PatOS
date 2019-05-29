@@ -1,16 +1,16 @@
-PVector3 = {
+local PVector3 = {
 	x = 0,
 	y = 0,
 	z = 0
 }
 
-function PVector3:New(x, y, z)
+function New(x, y, z)
 	v3 = {}
-	setmetatable(v3, self)
-	self.__index = self
-	self.x = x or 0
-	self.y = y or 0
-	self.z = z or 0
+	setmetatable(v3, PVector3)
+	self.__index = PVector3
+	self.x = tonumber(x) or 0
+	self.y = tonumber(y) or 0
+	self.z = tonumber(z) or 0
 	return v3
 end
 
