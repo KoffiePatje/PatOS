@@ -44,7 +44,7 @@ local PVector3 = {
 	end,
 	
 	Cross = Cross(self, other)
-		return PVector.New(
+		return PVector3.New(
 			(self.y * other.z) - (self.z * other.y),
 			(self.z * other.x) - (self.x * other.z),
 			(self.x * other.y) - (self.y * other.x)
@@ -53,7 +53,7 @@ local PVector3 = {
 	
 	Round = function(self, nTolerance)
 	    nTolerance = nTolerance or 1.0
-		return vector.new(
+		return PVector3.New(
 			math.floor( (self.x + (nTolerance * 0.5)) / nTolerance ) * nTolerance,
 			math.floor( (self.y + (nTolerance * 0.5)) / nTolerance ) * nTolerance,
 			math.floor( (self.z + (nTolerance * 0.5)) / nTolerance ) * nTolerance
