@@ -29,9 +29,10 @@ os.loadAPI('PatOS/API')
 
 
 API.Load("GPSUtil")
-local gpsSupported, startPosition = GPSUtil.TryGetGPSPosition(3)
+local gpsSupported, myTurtle = GPSUtil.TryGetGPSTrackedTurtle(3)
 if gpsSupported then 
 	print('GPS supported, using global coordinate system!')
 else
 	print('GPS not Supported, using local coordinate system!')
 end
+
