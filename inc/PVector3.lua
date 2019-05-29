@@ -12,21 +12,21 @@ function PVector:New(x, y, z)
 end
 
 function PVector3:Add(other)
-	self.x += other.x
-	self.y += other.y
-	self.z += other.z
+	self.x = self.x + other.x
+	self.y = self.y + other.y
+	self.z = self.z + other.z
 end
 
 function PVector3:Sub(other)
-	self.x -= other.x
-	self.y -= other.y
-	self.z -= other.z
+	self.x = self.x - other.x
+	self.y = self.y - other.y
+	self.z = self.z - other.z
 end
 
 function PVector3:Mul(scalar)
-	self.x *= scalar
-	self.y *= scalar
-	self.z *= scalar
+	self.x = self.x * scalar
+	self.y = self.y * scalar
+	self.z = self.z * scalar
 end
 
 function PVector3:Dot(other)
