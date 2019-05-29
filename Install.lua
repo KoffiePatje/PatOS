@@ -40,7 +40,7 @@ function RecursiveGetGithubFiles(baseUrl)
 end
 
 -- Retrieve JSON parser
-local jsonStatus, jsonResponse = requestHttp(GITHUB_RAW_BASE .. 'KoffiePatje/PatOS/master/inc/JSON.lua')
+local jsonStatus, jsonResponse = requestHttp(GITHUB_RAW_BASE .. '/KoffiePatje/PatOS/master/inc/JSON.lua')
 if not (jsonStatus == 200) then
 	print("Couldn't dowload JSON lib..")
 	shell.exit();
