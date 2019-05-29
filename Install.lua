@@ -17,6 +17,8 @@ local jsonStatus, jsonResponse = requestHttp(GITHUB_RAW_BASE .. 'KoffiePatje/Pat
 if not (jsonStatus == 200) then
 	print("Couldn't dowload JSON lib..")
 	shell.exit();
+else
+	print("Succesfully retrieved JSON library");
 end
 
 -- Store JSON lib at temporary location
@@ -42,7 +44,7 @@ if not repo then
 	repo = 'KoffiePatje/PatOS'
 end
 
-
+print('Requesting file list from ' .. GITHUB_REST_API_BASE .. repo .. '/contents');
 local status, response = requestHttp(GITHUB_REST_API_BASE .. repo .. '/contents')
 if not (status == 200) then
 	print("Couldn't query github REST API") 
