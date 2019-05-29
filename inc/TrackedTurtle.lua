@@ -105,8 +105,8 @@ end
 
 function FromTable(t) 
 	local trackedTurtle = {
-		position = t.position or PVector3.New(0, 0, 0),
-		rotation = t.rotation or PVector3.New(0, 0, 1)
+		position = PVector3.FromTable(t.position) or PVector3.New(0, 0, 0),
+		rotation = PVector3.FromTable(t.rotation) or PVector3.New(0, 0, 1)
 	}
 	setmetatable(trackedTurtle, nil)
 	setmetatable(trackedTurtle, TrackedTurtleMetatable)
