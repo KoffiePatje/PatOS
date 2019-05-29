@@ -1,6 +1,6 @@
 API.Load("PVector3")
 
-local Entity = { 
+local TrackedTurtle = { 
 	--------------
 	-- Movement --
 	--------------
@@ -89,18 +89,18 @@ local Entity = {
 	end
 }
 
-local EntityMetatable = {
-	__index = Entity,
-	__tostring = Entity.ToString
+local TrackedTurtleMetatable = {
+	__index = TrackedTurtle,
+	__tostring = TrackedTurtle.ToString
 }
 
 function New(startPosition, startRotation)
-	entity = {
+	trackedTurtle = {
 		position = startPosition or PVector3.New(0, 0, 0),
 		rotation = startRotation or PVector3.New(0, 0, 1),
 	}
-	setmetatable(entity, EntityMetatable)
-	return entity;
+	setmetatable(trackedTurtle, TrackedTurtleMetatable)
+	return trackedTurtle;
 end
 
 
