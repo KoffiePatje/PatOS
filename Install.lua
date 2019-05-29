@@ -12,6 +12,28 @@ function requestHttp(url)
 	return status, response
 end
 
+function RecursiveGetGithubFiles(string baseUrl)
+	-- Retrieve directory listing from the Github REST API
+	local status, response = requestHttp(baseUrl)
+	
+	if not (status == 200) then
+		print("Couldn't query github REST API for url: " .. baseUrl)
+		return
+	end
+	
+	
+	local responseData = JSON.decode(response)
+	
+	for i=1, #responseData do
+		local entry = responseData[i]
+		if entry.type == 'file' then 
+			print(entry.name)
+		else if entry.type == 'dir' then
+			RecursiveGetGithubFiles(entry.url)
+		end
+	end 
+end
+
 -- Retrieve JSON parser
 local jsonStatus, jsonResponse = requestHttp(GITHUB_RAW_BASE .. 'KoffiePatje/PatOS/master/inc/JSON.lua')
 if not (jsonStatus == 200) then
@@ -44,19 +66,5 @@ if not repo then
 	repo = 'KoffiePatje/PatOS'
 end
 
-print('Requesting file list from ' .. GITHUB_REST_API_BASE .. '/repos/' .. repo .. '/contents');
-local status, response = requestHttp(GITHUB_REST_API_BASE .. '/repos/' .. repo .. '/contents')
-if not (status == 200) then
-	print("Couldn't query github REST API") 
-	shell.exit();
-end
-
-local responseData = JSON.decode(response)
-
-for i=1, #responseData do
-	local entry = responseData[i]
-	if string.find(entry.name, '.lua') then
-		print(entry.name)
-	end
-end
+SyncGitDirectory(GITHUB_REST_API_BASE .. '/repos/' .. repo .. '/contents')
 
