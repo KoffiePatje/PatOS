@@ -50,15 +50,15 @@ local Entity = {
 	-- Rotation --
 	--------------
 	RotateInternal = function(self, radians, turnFunc) 
-			local dirx = round( self.rotation.x * math.cos( radians ) - self.rotation.z * math.sin( radians ) )
-			local dirz = round( self.rotation.x * math.sin( radians ) + self.rotation.z * math.cos( radians ) )
-			
-			if turnFunc() then
-					dir = vector.new( dirx, 0, dirz )
-					return true
-			end
-		   
-			return false
+		local dirx = round( self.rotation.x * math.cos( radians ) - self.rotation.z * math.sin( radians ) )
+		local dirz = round( self.rotation.x * math.sin( radians ) + self.rotation.z * math.cos( radians ) )
+		
+		if turnFunc() then
+			dir = vector.new( dirx, 0, dirz )
+			return true
+		end
+	   
+		return false
 	end,
 	
 	
@@ -71,8 +71,8 @@ local Entity = {
 	end,
 
 	RotateTo = function(self, targetRotation)
-		while not (self.rotation.x == targetRotation.x and  self.rotation.z == target.rotation.z) do
-			local cross = self.rotation.Cross(targetRotation)
+		while not (self.rotation.x == targetRotation.x and self.rotation.z == target.rotation.z) do
+			local cross = self.rotation:Cross(targetRotation)
 			if cross.y >= 0 then 
 				self:RotateRight() 
 			else 
