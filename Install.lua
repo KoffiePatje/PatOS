@@ -5,7 +5,7 @@ local GITHUB_RAW_BASE = "https://raw.githubusercontent.com/"
 
 -- Helper functions
 function requestHttp(url)
-	local requestResult = http.get(url)
+	local request = http.get(url)
 	local status = request.getResponseCode()
 	local response = request.readAll()
 	request.close()
