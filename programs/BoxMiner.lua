@@ -11,14 +11,14 @@ print(myTurtle:ToString())
 
 API.Load("Prefs")
 
-Prefs.Set("BoxSize", boxSize)
-Prefs.Set("Turtle", myTurtle)
+Prefs.Set("BoxSize", textutils.serialize(boxSize))
+Prefs.Set("Turtle", textutils.serialize(myTurtle))
 
 Prefs.Save("BoxMiner")
 Prefs.Load("BoxMiner")
 
-local storedBoxSize = PVector3.FromTable(Prefs.Get("BoxSize"))
-local storedTurtle = TrackedTurtle.FromTable(Prefs.Get("Turtle"))
+local storedBoxSize = textutils.deserialize(Prefs.Get("BoxSize"))
+local storedTurtle = textutils.deserialize(Prefs.Get("Turtle"))
 
 print(storedBoxSize)
 print(storedTurtle)
