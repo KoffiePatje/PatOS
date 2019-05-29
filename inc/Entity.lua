@@ -14,7 +14,7 @@ local Entity = {
 			sleep(0.1)
 		end
 		
-		self.position.Add(direction)
+		self.position = self.position + direction
 	end,
 	
 	MoveUp = function(self)
