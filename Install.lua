@@ -4,18 +4,18 @@ local GITHUB_REST_API_BASE = "https://api.github.com/";
 local GITHUB_RAW_BASE = "https://raw.githubusercontent.com/"
 
 -- Helper functions
-function requestHttp(url) {
+function requestHttp(url)
 	local requestResult = http.get(url)
 	local status = request.getResponseCode()
 	local response = request.readAll()
 	request.close()
 	return status, response
-}
+end
 
 -- Retrieve JSON parser
 local jsonStatus, jsonResponse = requestHttp(GITHUB_RAW_BASE .. 'KoffiePatje/PatOS/master/inc/JSON.lua').readAll()
-if jsonStatus not 200 then
-	os.print("Couldn't dowload JSON lib..")
+if not (status == 200) then
+	print("Couldn't dowload JSON lib..")
 	shell.exit();
 end
 
@@ -34,8 +34,8 @@ end
 
 
 local status, response = requestHttp(GITHUB_REST_API_BASE .. repo .. '/contents')
-if status not 200 then 
-	os.print("Couldn't query github REST API") 
+if not (status == 200) then
+	print("Couldn't query github REST API") 
 	shell.exit();
 end
 
@@ -43,7 +43,7 @@ local responseData = decode(response)
 
 for entry in responseData do
 	if string.find(entry.name, '.lua') then
-		os.print(entry.name)
+		print(entry.name)
 	end
 end
 
