@@ -3,6 +3,9 @@
 local GITHUB_REST_API_BASE = "https://api.github.com";
 local GITHUB_RAW_BASE = "https://raw.githubusercontent.com"
 
+local GITHUB_TREE = 'master'
+local GITHUB_REPO = 'KoffiePatje/PatOS'
+
 -- Helper functions
 function requestHttp(url)
 	local request = http.get(url)
@@ -12,7 +15,7 @@ function requestHttp(url)
 	return status, response
 end
 
-function RecursiveGetGithubFiles(string baseUrl)
+function RecursiveGetGithubFiles(baseUrl)
 	-- Retrieve directory listing from the Github REST API
 	local status, response = requestHttp(baseUrl)
 	
@@ -55,16 +58,6 @@ file.close();
 -- Load JSON API
 os.loadAPI('Temp/JSON');
 
--- See what Repository we are targeting (aka read command line)
-local repo, tree = select(1, ...)
-
-if not tree then
-	tree = repo or 'master'
-end
-
-if not repo then
-	repo = 'KoffiePatje/PatOS'
-end
-
-SyncGitDirectory(GITHUB_REST_API_BASE .. '/repos/' .. repo .. '/contents')
+-- Sync Github Directory
+SyncGitDirectory(GITHUB_REST_API_BASE .. '/repos/' .. GITHUB_REPO .. '/contents')
 
