@@ -28,7 +28,7 @@ function RecursiveGetGithubFiles(baseUrl)
 	for i=1, #responseData do
 		local entry = responseData[i]
 		if entry.type == 'file' then 
-			if string.find(entry.name, '.lua')
+			if string.find(entry.name, '.lua') then
 				print(entry.name)
 			else
 				print('Non-lua: ' .. entry.name)
