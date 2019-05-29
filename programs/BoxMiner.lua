@@ -47,14 +47,14 @@ end
 
 function GetBoxBounds() 
 	local number = nil
-	PVector3 bounds = PVector3.New(nil, nil, nil)
+	local bounds = PVector3.New(nil, nil, nil)
 	
 	print('x: ')
-	repeat bounds.x = Input.GetNumberInput() while (bounds.x == nil)
+	repeat bounds.x = Input.GetNumberInput() until not (bounds.x == nil)
 	print('y: ')
-	repeat bounds.y = Input.GetNumberInput() while (bounds.y == nil)
+	repeat bounds.y = Input.GetNumberInput() until not (bounds.y == nil)
 	print('z: ')
-	repeat bounds.z = Input.GetNumberInput() while (bounds.z == nil)
+	repeat bounds.z = Input.GetNumberInput() until not (bounds.z == nil)
 	
 	return bounds
 end
@@ -62,4 +62,9 @@ end
 function Main()
 	local myTurtle = InitializeTurtle()
 	local boxBounds = GetBoxBounds()
+	
+	print(myTurtle)
+	print(boxBounds)
 end
+
+Main()

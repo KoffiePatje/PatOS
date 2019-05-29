@@ -94,7 +94,7 @@ local PVector3Metatable = {
 	__mul = PVector3.Multiply,
 	__div = PVector3.Divide,
 	__unm = PVector3.Negate,
-	__tostring = vector.ToString
+	__tostring = PVector3.ToString
 }
 
 function New(x, y, z)
