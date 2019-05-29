@@ -15,3 +15,7 @@ Prefs.Set("BoxSize", boxSize)
 Prefs.Set("Turtle", myTurtle)
 
 Prefs.Save("BoxMiner")
+Prefs.Load("BoxMiner")
+
+print(Prefs.Get("BoxSize"))
+print(Prefs.Get("Turtle"))

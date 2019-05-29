@@ -8,11 +8,7 @@ local preferencePath = 'PatOS/saves/%s/preferences.save'
 local t = {}
 
 function Set(name, value)
-	if not t[name] then 
-		t.insert(name, value)
-	else
-		t[name] = value
-	end
+	t[name] = value
 end
 
 function Get(name)
