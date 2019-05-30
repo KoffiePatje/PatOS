@@ -62,14 +62,22 @@ function GetBoxBoundsFromInput()
 	return bounds
 end
 
-function GetBoxBoundsFromCLA()
+function TryGetBoxBoundsFromCLA()
 	local values = CLAUtil.GetArgumentValues("-box", 3)
-	return PVector3.New(values[1], values[2], values[3])
+	if values[1] == nil or values[2] is nil or values[3] == nil then
+		return false, nil
+	else		
+		return true, PVector3.New(values[1], values[2], values[3])
+	end
 end
 
 function Main()
 	local myTurtle = InitializeTurtle()
-	local boxBounds = GetBoxBoundsFromCLA()
+	
+	local retrievedBoundsFromCLA, boxBounds = TryGetBoxBoundsFromCLA()
+	if not retrievedBoundsFromCLA then
+		boxBounds = GetBoxBoundsFromInput()
+	end
 	
 	print(myTurtle)
 	print(boxBounds)
