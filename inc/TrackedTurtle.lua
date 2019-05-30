@@ -19,6 +19,7 @@ local TrackedTurtle = {
 		end
 		
 		self.position = self.position + direction
+		if not self.OnTransformChanged == nil then self.OnTransformChanged() end
 	end,
 	
 	MoveUp = function(self)
@@ -59,6 +60,7 @@ local TrackedTurtle = {
 		
 		if turnFunc() then
 			dir = vector.new( dirx, 0, dirz )
+			if not self.OnTransformChanged == nil then self.OnTransformChanged() end
 			return true
 		end
 	   
@@ -90,6 +92,13 @@ local TrackedTurtle = {
 	----------
 	ToString = function(self) 
 		return '[pos: ' .. self.position:ToString() .. ', rot: ' .. self.rotation:ToString() .. ']'
+	end,
+	
+	------------
+	-- Events --
+	------------
+	OnTransformChanged = function(self, callback)
+		self.OnTransformChangedCallback = callback
 	end
 }
 

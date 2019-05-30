@@ -75,12 +75,16 @@ function TryGetBoxBoundsFromCLA()
 end
 
 function Main()
+	-- Create/Retrieve TrackedTurtle
 	local myTurtle = InitializeTurtle()
 	
+	-- Get Box Bounds
 	local retrievedBoundsFromCLA, boxBounds = TryGetBoxBoundsFromCLA()
 	if not retrievedBoundsFromCLA then
 		boxBounds = GetBoxBoundsFromInput()
 	end
+	
+	
 	
 	print(myTurtle)
 	print(boxBounds)
