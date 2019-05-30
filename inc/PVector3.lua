@@ -4,7 +4,7 @@
 
 local PVector3 = {
 	Add = function (self, other)
-		return PVector.New(
+		return PVector3.New(
 			self.x + other.x,
 			self.y + other.y,
 			self.z + other.z
@@ -12,7 +12,7 @@ local PVector3 = {
 	end,
 	
 	Subtract = function(self, other)
-		return PVector.New(
+		return PVector3.New(
 			self.x - other.x,
 			self.y - other.y,
 			self.z - other.z
@@ -20,7 +20,7 @@ local PVector3 = {
 	end,
 	
 	Multiply = function(self, scalar)
-		return PVector.New(
+		return PVector3.New(
 			self.x * scalar,
 			self.y * scalar,
 			self.z * scalar
@@ -28,7 +28,7 @@ local PVector3 = {
 	end,
 	
 	Divide = function(self, divider)
-		return PVector.New(
+		return PVector3.New(
 			self.x / divider,
 			self.y / divider,
 			self.z / divider
