@@ -12,6 +12,7 @@ CLAUtil.SetArguments({...})
 local myTurtle = nil
 local gpsSupported = false
 local yDirection = nil
+local droppingToChest = false
 
 ----------------
 -- Initialize --
@@ -80,9 +81,14 @@ function OnTurtleRefuelRequired(turtle)
 	end
 end
 
+-- We saveguard the DropItemsInChest in case this gets called why moving towards the chest, simply ignore it and let 1 block get away
 function OnTurtleNoRoomForNextBlock(turtle)
 	print("No room for next block")
-	DropItemsInChest()
+	if not droppingToChest then
+		droppingToChest = true
+		DropItemsInChest()
+		droppingToChest = false
+	end
 end
 
 ------------
