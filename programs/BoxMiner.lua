@@ -67,6 +67,14 @@ function OnTurtleRefuelRequired(turtle)
 	end
 end
 
+function OnTurtleNoRoomForNextBlock(turtle)
+	print("No room for next block")
+end
+
+function StartMining()
+
+end
+
 function Main()
 	-- Create/Retrieve TrackedTurtle
 	local myTurtle = InitializeTurtle()
@@ -76,19 +84,12 @@ function Main()
 	if not retrievedBoundsFromCLA then
 		boxBounds = GetBoxBoundsFromInput()
 	end
-	
-	print(myTurtle)
-	print(boxBounds)
-		
+			
 	myTurtle.onTransformChanged:Subscribe(OnTurtleTransformChanged)
 	myTurtle.onRefuelRequired:Subscribe(OnTurtleRefuelRequired)
-	
-	myTurtle:MoveForward()
-	myTurtle:RotateRight()
-	myTurtle:RotateRight()
-	myTurtle:MoveForward()
-	myTurtle:RotateLeft()
-	myTurtle:RotateLeft()
+	myTurtle.onNoRoomForNextBlock:Subscribe(OnTurtleNoRoomForNextBlock)
+		
+	myTurtle:DigForward()
 	
 end
 

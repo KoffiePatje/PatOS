@@ -10,7 +10,7 @@ local TrackedTurtle = {
 	--------------
 	-- Movement --
 	--------------
-	MoveInternal =  function(self, direction, moveFunc, inspectFunc, digFunc, attackFunc)
+	__Move =  function(self, direction, moveFunc, inspectFunc, digFunc, attackFunc)
 		self:CheckFuelLevels(1)
 		
 		while not moveFunc() do
@@ -28,15 +28,15 @@ local TrackedTurtle = {
 	end,
 	
 	MoveUp = function(self)
-		self:MoveInternal(PVector3.new(0, 1, 0), turtle.up, turtle.detectUp, turtle.digUp, turtle.attackUp)
+		self:__Move(PVector3.new(0, 1, 0), turtle.up, turtle.detectUp, turtle.digUp, turtle.attackUp)
 	end,
 	
 	MoveDown = function(self)
-		self:MoveInternal(PVector3.new(0, -1, 0), turtle.down, turtle.detectDown, turtle.digDown, turtle.attackDown)
+		self:__Move(PVector3.new(0, -1, 0), turtle.down, turtle.detectDown, turtle.digDown, turtle.attackDown)
 	end,
 	
 	MoveForward = function(self)
-		self:MoveInternal(self.rotation, turtle.forward, turtle.detect, turtle.dig, turtle.attack)
+		self:__Move(self.rotation, turtle.forward, turtle.detect, turtle.dig, turtle.attack)
 	end,
 	
 	MoveTo = function(self, targetPosition)
@@ -59,7 +59,7 @@ local TrackedTurtle = {
 	--------------
 	-- Rotation --
 	--------------
-	RotateInternal = function(self, radians, turnFunc) 
+	__Rotate = function(self, radians, turnFunc) 
 		local dirx = MathUtil.Round( self.rotation.x * math.cos( radians ) - self.rotation.z * math.sin( radians ) )
 		local dirz = MathUtil.Round( self.rotation.x * math.sin( radians ) + self.rotation.z * math.cos( radians ) )
 		
@@ -74,11 +74,11 @@ local TrackedTurtle = {
 	
 	
 	RotateRight = function(self)
-		self:RotateInternal(-math.pi*0.5, turtle.turnRight)
+		self:__Rotate(-math.pi*0.5, turtle.turnRight)
 	end,
 	
 	RotateLeft = function(self)
-		self:RotateInternal(math.pi*0.5, turtle.turnLeft)
+		self:__Rotate(math.pi*0.5, turtle.turnLeft)
 	end,
 
 	RotateTo = function(self, targetRotation)
@@ -97,8 +97,7 @@ local TrackedTurtle = {
 	---------------------
 	CheckFuelLevels = function(self, minimalAmount)
 		minimalAmount = minimalAmount or 1
-		if self:HasFuel(minimalAmount) then 
-			print('Not Enough Fuel')
+		while not self:HasFuel(minimalAmount) then 
 			self.onRefuelRequired:Invoke(self)
 		end
 	end,
@@ -120,6 +119,60 @@ local TrackedTurtle = {
 		turtle.select(previousSelectedSlot)
 	end,
 	
+	--------------------------
+	-- Inventory Management --
+	--------------------------
+	__HasRoomForBlock = function(self, compareFunc)
+		for i#1, 16 do 
+			if turtle.getItemCount(i) == 0 or (compareFunc(i) and (turtle.getItemSpace(i) > 0)) then
+				return true
+			end
+		end
+	end,
+	
+	HasFreeSlot = function(self) 
+		for i#1, 16 do
+			if turtle.getItemCount(i) == 0 then
+				return true
+			end
+		end
+	end,
+	
+	HasRoomForBlockAbove = function(self)
+		return self:__HasRoomForBlock(turtle.compareUp)
+	end,
+	
+	HasRoomForBlockBelow = function(self)
+		return self:__HasRoomForBlock(turtle.compareDown)
+	end,
+	
+	HasRoomForBlockInFront = function(self)
+		return self:__HasRoomForBlock(turtle.compare)
+	end,
+	
+	--------------------
+	-- Mining Utility --
+	--------------------
+	__Dig = function(self, digFunc, inventoryCheckFunc) 
+		while not self:inventoryCheckFunc() do
+			self.onNoRoomForNextBlock:Invoke(self)
+		end
+		
+		digFunc()
+	end,
+	
+	DigForward = function(self) 
+		self:__Dig(turtle.dig, self.HasRoomForBlockInFront)
+	end,
+	
+	DigUp = function(self)
+		self:__Dig(turtle.digUp, self.HasRoomForBlockAbove)
+	end,
+	
+	DigDown = function(self)
+		self:__Dig(turtle.digDown, self.HasRoomForBlockBelow)
+	end,
+	
 	----------
 	-- Misc --
 	----------
@@ -133,31 +186,27 @@ local TrackedTurtleMetatable = {
 	__tostring = TrackedTurtle.ToString
 }
 
-function New(startPosition, startRotation, refuelRequiredCallback, transformChangedCallback)
-	local trackedTurtle = {
-		position = startPosition or PVector3.New(0, 0, 0),
-		rotation = startRotation or PVector3.New(0, 0, 1),
-		onRefuelRequired = Event.New(),
-		onTransformChanged = Event.New()
-	}
+function New(startPosition, startRotation)
+	local trackedTurtle = TrackedTurtle.__CreateObject(startPosition, startRotation);
 	setmetatable(trackedTurtle, TrackedTurtleMetatable)
-	
-	if not (refuelRequiredCallback == nil) then trackedTurtle.onRefuelRequired:Subscribe(refuelRequiredCallback) end
-	if not (transformChangedCallback == nil) then trackedTurtle.onTransformChanged:Subscribe(transformChangedCallback) end
-	
 	return trackedTurtle
 end
 
 function FromTable(t) 
-	local trackedTurtle = {
-		position = PVector3.FromTable(t.position) or PVector3.New(0, 0, 0),
-		rotation = PVector3.FromTable(t.rotation) or PVector3.New(0, 0, 1),
-		refuelRequiredCallback = Event.New(),
-		transformChangedCallback = Event.New()
-	}
+	local trackedTurtle = TrackedTurtle.__CreateObject(t.position, t.rotation)
 	setmetatable(trackedTurtle, nil)
 	setmetatable(trackedTurtle, TrackedTurtleMetatable)
 	return trackedTurtle
+end
+
+function __CreateObject(pos, rot)
+	return {
+		position = pos or PVector3.New(0, 0, 0),
+		rotation = rot or PVector3.New(0, 0, 1),
+		onRefuelRequired = Event.New(),
+		onNoRoomForNextBlock = Event.New(),
+		onTransformChanged = Event.New()
+	}
 end
 
 
