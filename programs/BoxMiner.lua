@@ -31,6 +31,7 @@ API.Load("PVector3")
 API.Load("TrackedTurtle")
 API.Load("GPSUtil")
 API.Load("Input")
+API.Load("CLAUtil")
 
 local gpsSupported = false
 
@@ -45,9 +46,9 @@ function InitializeTurtle()
 	return newTurtle
 end
 
-function GetBoxBounds() 
+function GetBoxBoundsFromInput() 
 	local number = nil
-	local bounds = PVector3.New(nil, nil, nil)
+	local bounds = PVector3.New()
 	
 	print('x: ')
 	repeat bounds.x = Input.GetNumberInput() until not (bounds.x == nil)
@@ -59,9 +60,17 @@ function GetBoxBounds()
 	return bounds
 end
 
+function GetBoxBoundsFromCLA()
+	local x, y, z = CLAUtil.GetArgumentValues("-box", 3)
+	
+	print(x)
+	print(y)
+	print(z)
+end
+
 function Main()
 	local myTurtle = InitializeTurtle()
-	local boxBounds = GetBoxBounds()
+	local boxBounds = GetBoxBoundsFromCLA()
 	
 	print(myTurtle)
 	print(boxBounds)
