@@ -64,10 +64,13 @@ end
 
 function TryGetBoxBoundsFromCLA()
 	local values = CLAUtil.GetArgumentValues("-box", 3)
-	if values[1] == nil or values[2] is nil or values[3] == nil then
+	local x = tonumber(values[1])
+	local y = tonumber(values[2])
+	local z = tonumber(values[3])
+	if x == nil or y == nil or z == nil then
 		return false, nil
 	else		
-		return true, PVector3.New(values[1], values[2], values[3])
+		return true, PVector3.New(x, y, z)
 	end
 end
 
