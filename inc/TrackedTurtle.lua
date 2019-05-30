@@ -124,7 +124,7 @@ local TrackedTurtle = {
 	-- Events --
 	------------
 	OnTransformChanged = function(self, callback)
-		self.onTransformChangedCallback = callback
+		self:onTransformChangedCallback = callback
 	end,
 	
 	__InvokeTransformChanged = function(self)
@@ -134,7 +134,7 @@ local TrackedTurtle = {
 	end,
 	
 	OnRefuelRequired = function(self, callback)
-		self.onRefuelRequiredCallback = callback
+		self:onRefuelRequiredCallback = callback
 	end,
 	
 	__InvokeRefuelRequired = function(self)
