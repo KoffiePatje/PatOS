@@ -146,6 +146,7 @@ function MineLayer(cornerPosA, cornerPosB, mineUp, mineDown)
 	local targetDirectionZ = MathUtil.Clamp(targetZ - myTurtle.position.z, -1, 1)
 	
 	-- Let's prefer the X direction
+	print('1 '..targetDirectionX)
 	myTurtle:RotateTo(PVector3.New(targetDirectionX, 0, 0))
 	local rowLength = maxX - minX + 1; -- We count the current position aswell
 	local rowCount = maxZ - minZ + 1;
@@ -156,8 +157,10 @@ function MineLayer(cornerPosA, cornerPosB, mineUp, mineDown)
 		-- Turn corner
 		if not (i == rowCount) then
 			local previousXDirection = myTurtle.rotation.x
+			print('2 '..targetDirectionZ)
 			myTurtle:RotateTo(PVector3.New(0, 0, targetDirectionZ))
 			MineRow(2, false, false)
+			print('3 '..(-previousXDirection))
 			myTurtle:RotateTo(PVector3.New(-previousXDirection, 0, 0))
 		end
 	end	
