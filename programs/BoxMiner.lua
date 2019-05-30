@@ -165,7 +165,7 @@ end
 
 function MineBox(cornerPosA, cornerPosB)
 	if not (myTurtle.position == cornerPosA) and not (myTurtle.position == cornerPosB) then error("None of the start corners relate to our current position") end
-	local targetCorner = (myTurtle.position == cornerPosA) and cornerPosA or cornerPosB
+	local targetCorner = (myTurtle.position == cornerPosA) and cornerPosB or cornerPosA
 	
 	-- Bounds are always relative
 	local yDelta = (targetCorner.y - myTurtle.position.y);
@@ -185,7 +185,7 @@ function MineBox(cornerPosA, cornerPosB)
 		-- Let's move to that Y
 		while not (myTurtle.position.y == desiredY) do
 			Mine(true, false, false)
-			if yDirection > 0 then myTurtle.MoveUp() else myTurtle.MoveDown() end
+			if yDirection > 0 then myTurtle:MoveUp() else myTurtle:MoveDown() end
 		end
 		
 		-- Let's start mining the Layer
