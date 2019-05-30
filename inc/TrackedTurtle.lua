@@ -39,8 +39,15 @@ local TrackedTurtle = {
 		self:__Move(self.rotation, turtle.forward, turtle.detect, self.DigForward, turtle.attack)
 	end,
 	
-	MoveTo = function(self, targetPosition)
-		while self.position.y > targetPosition.y do self:MoveDown() end
+	MoveTo = function(self, targetPosition, firstYDirection)
+		local yDirection = firstYDirection or -1
+		
+		-- By default we move down first and up at the end
+		if yDirection > 0 then
+			while self.position.y < targetPosition.y do self:MoveUp() end
+		else
+			while self.position.y > targetPosition.y do self:MoveDown() end
+		end
 		
 		if not (self.position.x == targetPosition.x) then
 			local direction = (PVector3.New(targetPosition.x, 0, 0) - PVector3.New(self.position.x, 0, 0)):Normalized()
@@ -48,13 +55,18 @@ local TrackedTurtle = {
 			while not (self.position.x == targetPosition.x) do self:MoveForward() end
 		end
 		
-		if not (self.position.z == target.position.z) then
+		if not (self.position.z == targetPosition.z) then
 			local direction = (PVector3.New(0, 0, targetPosition.z) - PVector3.New(0, 0, self.position.z)):Normalized()
 			self:RotateTo(direction)
-			while not (self.position.z == target.position.z) do self:MoveForward() end
+			while not (self.position.z == targetPosition.z) do self:MoveForward() end
 		end
 		
-		while self.position.y < targetPosition.y do self:MoveUp() end
+		-- By default we move down first and up at the end
+		if yDirection > 0 then
+			while self.position.y > targetPosition.y do self:MoveDown() end
+		else
+			while self.position.y < targetPosition.y do self:MoveUp() end
+		end
 	end,
 	
 	--------------
@@ -65,7 +77,7 @@ local TrackedTurtle = {
 		local dirZ = MathUtil.Round( self.rotation.x * math.sin( radians ) + self.rotation.z * math.cos( radians ) )
 		
 		if turnFunc() then
-			rotation = PVector3.New(dirX, 0, dirZ)
+			self.rotation = PVector3.New(dirX, 0, dirZ)
 			self.onTransformChanged:Invoke(self)
 			return true
 		end
@@ -107,6 +119,11 @@ local TrackedTurtle = {
 	HasFuel = function(self, minimalAmount)
 		minimalAmount = minimalAmount or 1
 		return turtle.getFuelLevel() > minimalAmount
+	end,
+	
+	HasRoomForMoreFuel = function(self, amount)
+		amount = amount or 1000
+		return (turtle.getFuelLevel() + amount) < turtle.getFuelLimit()
 	end,
 	
 	Refuel = function(self, slot, maxConsumeAmount)
@@ -185,15 +202,15 @@ local TrackedTurtle = {
 	-- Block Inspection --
 	----------------------
 	CanMineForward = function(self)
-		return turtle.detect() and self:HasRoomForBlockInFront()
+		return turtle.detect() --and self:HasRoomForBlockInFront()
 	end,
 	
 	CanMineUp = function(self)
-		return turtle.detectUp() and self:HasRoomForBlockAbove() 
+		return turtle.detectUp() --and self:HasRoomForBlockAbove() 
 	end,
 	
 	CanMineDown = function(self)
-		return turtle.detectDown() and self:HasRoomForBlockBelow()
+		return turtle.detectDown() --and self:HasRoomForBlockBelow()
 	end,
 	
 	----------

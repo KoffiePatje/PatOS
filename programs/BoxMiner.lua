@@ -11,6 +11,7 @@ CLAUtil.SetArguments({...})
 
 local myTurtle = nil
 local gpsSupported = false
+local yDirection = nil
 
 ----------------
 -- Initialize --
@@ -30,21 +31,21 @@ function InitializeTurtle()
 	return newTurtle
 end
 
-function GetBoxBoundsFromInput() 
+function GetBoxSizeFromInput() 
 	local number = nil
-	local bounds = PVector3.New()
+	local size = PVector3.New()
 	
 	print('x: ')
-	repeat bounds.x = Input.GetNumberInput() until not (bounds.x == nil)
+	repeat size.x = Input.GetNumberInput() until not (size.x == nil)
 	print('y: ')
-	repeat bounds.y = Input.GetNumberInput() until not (bounds.y == nil)
+	repeat size.y = Input.GetNumberInput() until not (size.y == nil)
 	print('z: ')
-	repeat bounds.z = Input.GetNumberInput() until not (bounds.z == nil)
+	repeat size.z = Input.GetNumberInput() until not (size.z == nil)
 	
-	return bounds
+	return size
 end
 
-function TryGetBoxBoundsFromCLA()
+function TryGetBoxSizeFromCLA()
 	local values = CLAUtil.GetArgumentValues("-box", 3)
 	if values == nil then 
 		return false, nil 
@@ -65,7 +66,7 @@ end
 -- Event Handlers --
 --------------------
 function OnTurtleTransformChanged(turtle)
-	print("Moved "..turtle:ToString());
+	--print("Moved "..turtle:ToString());
 end
 
 -- Make sure to refuel when needed, throw error message if out of fuel and keep polling for new fuel each 
@@ -73,7 +74,7 @@ function OnTurtleRefuelRequired(turtle)
 	while not turtle:HasFuel() do 
 		turtle:Refuel(16)
 		if not turtle:HasFuel() then
-			print("Couldn't refuel, please supply fuel in slot 16 and then press C to retry")
+			print("Couldn't refuel, please supply fuel in the 16th slot and then press C to retry")
 			Input.WaitForKey(keys.c)
 		end
 	end
@@ -81,6 +82,7 @@ end
 
 function OnTurtleNoRoomForNextBlock(turtle)
 	print("No room for next block")
+	DropItemsInChest()
 end
 
 ------------
@@ -103,7 +105,7 @@ function Mine(mineUp, mineDown, mineForward)
 		end
 		
 		if mineForward and myTurtle:CanMineForward() then
-			myTurtle:DigFoward()
+			myTurtle:DigForward()
 			didDigSomething = true
 		end
 		
@@ -116,10 +118,11 @@ end
 function MineRow(forwardLength, mineUp, mineDown)
 	for i=1, forwardLength do
 		local lastRow = (i == forwardLength)
-		Mine(mineUp, mineDown, lastRow) -- Last position we won't mine forward
-		
-		if not lastRow then 
-			myTurtle:Forward() 
+		if lastRow then
+			Mine(mineUp, mineDown, false) -- Last position we won't mine forward
+		else 
+			Mine(mineUp, mineDown, true)
+			myTurtle:MoveForward()
 		end
 	end
 end
@@ -138,17 +141,13 @@ function MineLayer(cornerPosA, cornerPosB, mineUp, mineDown)
 	
 	local targetX = (myTurtle.position.x == minX) and maxX or minX
 	local targetZ = (myTurtle.position.z == minZ) and maxZ or minZ
-	
-	print('('..myTurtle.position.x..', '..myTurtle.position.z..')')
-	print('('..targetX..', '..targetZ..')')
-	
+		
 	local targetDirectionX = MathUtil.Clamp(targetX - myTurtle.position.x, -1, 1)
 	local targetDirectionZ = MathUtil.Clamp(targetZ - myTurtle.position.z, -1, 1)
 	
 	-- Let's prefer the X direction
-	print('1 '..targetDirectionX)
 	myTurtle:RotateTo(PVector3.New(targetDirectionX, 0, 0))
-	local rowLength = maxX - minX + 1; -- We count the current position aswell
+	local rowLength = maxX - minX + 1; 
 	local rowCount = maxZ - minZ + 1;
 	
 	for i=1, rowCount do
@@ -157,10 +156,8 @@ function MineLayer(cornerPosA, cornerPosB, mineUp, mineDown)
 		-- Turn corner
 		if not (i == rowCount) then
 			local previousXDirection = myTurtle.rotation.x
-			print('2 '..targetDirectionZ)
 			myTurtle:RotateTo(PVector3.New(0, 0, targetDirectionZ))
 			MineRow(2, false, false)
-			print('3 '..(-previousXDirection))
 			myTurtle:RotateTo(PVector3.New(-previousXDirection, 0, 0))
 		end
 	end	
@@ -170,25 +167,29 @@ function MineBox(cornerPosA, cornerPosB)
 	if not (myTurtle.position == cornerPosA) and not (myTurtle.position == cornerPosB) then error("None of the start corners relate to our current position") end
 	local targetCorner = (myTurtle.position == cornerPosA) and cornerPosB or cornerPosA
 	
+	print('Mining Box: '..cornerPosA:ToString()..', '..cornerPosB:ToString())
+	
 	-- Bounds are always relative
-	local yDelta = (targetCorner.y - myTurtle.position.y);
+	local yDelta = (targetCorner.y - myTurtle.position.y) + 1;
 	local yDistance = math.abs(yDelta)
-	local yDirection = MathUtil.Clamp(yDelta, -1, 1)
+	yDirection = MathUtil.Clamp(yDelta, -1, 1)
 	
 	local minY = math.min(cornerPosA.y, cornerPosB.y)
 	local maxY = math.max(cornerPosA.y, cornerPosB.y)
-	
+		
 	-- Compute the numbers of steps we have to take
 	local ySteps = math.floor((yDistance + 2) / 3)
 	
 	for i=1, ySteps do
 		-- Compute the desired Y
 		local desiredY = MathUtil.Clamp(((i - 1) * (yDirection * 3)) + yDirection, minY, maxY)
+		print('desiredY: '..desiredY)
 		
 		-- Let's move to that Y
 		while not (myTurtle.position.y == desiredY) do
 			Mine(true, false, false)
 			if yDirection > 0 then myTurtle:MoveUp() else myTurtle:MoveDown() end
+			print('newY: '..myTurtle.position.y)
 		end
 		
 		-- Let's start mining the Layer
@@ -196,6 +197,44 @@ function MineBox(cornerPosA, cornerPosB)
 		local mineUp = ((desiredY + 1) <= maxY)
 		MineLayer(PVector3.New(cornerPosA.x, desiredY, cornerPosA.z), PVector3.New(cornerPosB.x, desiredY, cornerPosB.z), mineUp, mineDown)
 	end
+end
+
+--------------------------
+-- Inventory Management --
+--------------------------
+function DropItemsInChest()
+	local currentPosition = myTurtle.position
+	local currentRotation = myTurtle.rotation
+	
+	myTurtle:MoveTo(PVector3.New(0, 0, 0), yDirection)
+	myTurtle:RotateTo(PVector3.New(0, 0, -1))
+	
+	AttemptToFuelWithAnythingFromInventory()
+	AttemptToDropAnythingInInventory()
+	
+	myTurtle:MoveTo(currentPosition, yDirection)
+	myTurtle:RotateTo(currentRotation)
+end
+
+function AttemptToFuelWithAnythingFromInventory()
+	local i = 1
+	while i <= 16 and myTurtle:HasRoomForMoreFuel() do
+		myTurtle:Refuel(i)
+		i = i + 1
+	end
+end
+
+function AttemptToDropAnythingInInventory() 
+	local previousSlot = turtle.getSelectedSlot()
+	for i=1, 16 do
+		if turtle.getItemCount(i) > 0 and turtle.select(i) then
+			while not turtle.drop() do
+				print("Couldn't drop item, perhaps the inventory is full, resolve the situation and press C to retry")
+				Input.WaitForKey(keys.c)
+			end
+		end
+	end
+	turtle.select(previousSlot)
 end
 
 -------------
@@ -206,13 +245,19 @@ function Main()
 	myTurtle = InitializeTurtle()
 	
 	-- Get Box Bounds
-	local retrievedBoundsFromCLA, boxBounds = TryGetBoxBoundsFromCLA()
-	if not retrievedBoundsFromCLA then
-		boxBounds = GetBoxBoundsFromInput()
+	local retrievedSizeFromCLA, boxSize = TryGetBoxSizeFromCLA()
+	if not retrievedSizeFromCLA then
+		boxSize = GetBoxSizeFromInput()
 	end
 	
 	-- Let's start mining that sucker!
-	MineBox(myTurtle.position, myTurtle.position + boxBounds)
+	MineBox(myTurtle.position, myTurtle.position + (boxSize - PVector3.New(1, 1, 1))) --subtract 1 from all directions since we're dealing with size and we count the block that the turtle is currently on
+	
+	-- Let's finish up
+	myTurtle:MoveTo(PVector3.New(0, 0, 0), yDirection)
+	myTurtle:RotateTo(PVector3.New(0, 0, -1))
+	DropItemsInChest()
+	myTurtle:RotateTo(PVector3.New(0, 0, 1))
 end
 
 Main()
