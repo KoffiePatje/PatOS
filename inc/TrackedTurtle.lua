@@ -149,7 +149,7 @@ function New(startPosition, startRotation, refuelRequiredCallback, transformChan
 	local trackedTurtle = {
 		position = startPosition or PVector3.New(0, 0, 0),
 		rotation = startRotation or PVector3.New(0, 0, 1),
-		onRefuelRequiredCallback = refuelRequiredCallback or nil
+		onRefuelRequiredCallback = refuelRequiredCallback or nil,
 		onTransformChangedCallback = transformChangedCallback or nil
 	}
 	setmetatable(trackedTurtle, TrackedTurtleMetatable)
