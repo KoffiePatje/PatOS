@@ -97,7 +97,7 @@ local TrackedTurtle = {
 	---------------------
 	CheckFuelLevels = function(self, minimalAmount)
 		minimalAmount = minimalAmount or 1
-		while not self:HasFuel(minimalAmount) then 
+		while not self:HasFuel(minimalAmount) do 
 			self.onRefuelRequired:Invoke(self)
 		end
 	end,
@@ -123,7 +123,7 @@ local TrackedTurtle = {
 	-- Inventory Management --
 	--------------------------
 	__HasRoomForBlock = function(self, compareFunc)
-		for i#1, 16 do 
+		for i=1, 16 do 
 			if turtle.getItemCount(i) == 0 or (compareFunc(i) and (turtle.getItemSpace(i) > 0)) then
 				return true
 			end
@@ -131,7 +131,7 @@ local TrackedTurtle = {
 	end,
 	
 	HasFreeSlot = function(self) 
-		for i#1, 16 do
+		for i=1, 16 do
 			if turtle.getItemCount(i) == 0 then
 				return true
 			end
@@ -186,6 +186,16 @@ local TrackedTurtleMetatable = {
 	__tostring = TrackedTurtle.ToString
 }
 
+function __CreateObject(pos, rot)
+	return {
+		position = pos or PVector3.New(0, 0, 0),
+		rotation = rot or PVector3.New(0, 0, 1),
+		onRefuelRequired = Event.New(),
+		onNoRoomForNextBlock = Event.New(),
+		onTransformChanged = Event.New()
+	}
+end
+
 function New(startPosition, startRotation)
 	local trackedTurtle = TrackedTurtle.__CreateObject(startPosition, startRotation);
 	setmetatable(trackedTurtle, TrackedTurtleMetatable)
@@ -197,16 +207,6 @@ function FromTable(t)
 	setmetatable(trackedTurtle, nil)
 	setmetatable(trackedTurtle, TrackedTurtleMetatable)
 	return trackedTurtle
-end
-
-function __CreateObject(pos, rot)
-	return {
-		position = pos or PVector3.New(0, 0, 0),
-		rotation = rot or PVector3.New(0, 0, 1),
-		onRefuelRequired = Event.New(),
-		onNoRoomForNextBlock = Event.New(),
-		onTransformChanged = Event.New()
-	}
 end
 
 
