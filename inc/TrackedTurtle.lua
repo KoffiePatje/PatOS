@@ -128,7 +128,9 @@ local TrackedTurtle = {
 	end,
 	
 	__InvokeTransformChanged = function(self)
-		if not self.onTransformChangedCallback == nil then self.onTransformChangedCallback() end
+		if not (self.onTransformChangedCallback == nil) then 
+			self.onTransformChangedCallback() 
+		end
 	end,
 	
 	OnRefuelRequired = function(self, callback)
@@ -136,7 +138,9 @@ local TrackedTurtle = {
 	end,
 	
 	__InvokeRefuelRequired = function(self)
-		if not self.onRefuelRequiredCallback == nil then self.onRefuelRequiredCallback() end
+		if not (self.onRefuelRequiredCallback == nil) then 
+			self.onRefuelRequiredCallback() 
+		end
 	end
 }
 
