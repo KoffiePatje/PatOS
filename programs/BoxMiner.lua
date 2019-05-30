@@ -77,8 +77,12 @@ function Main()
 	myTurtle.onTransformChanged:Subscribe(OnTurtleTransformChanged)
 	myTurtle.onRefuelRequired:Subscribe(OnTurtleRefuelRequired)
 	
-	print('Moving Forward')
 	myTurtle:MoveForward()
+	myTurtle:RotateRight()
+	myTurtle:RotateRight()
+	myTurtle:MoveForward()
+	myTurtle:RotateLeft()
+	myTurtle:RotateLeft()
 	
 end
 
