@@ -64,9 +64,14 @@ end
 
 function TryGetBoxBoundsFromCLA()
 	local values = CLAUtil.GetArgumentValues("-box", 3)
+	if values == nil then 
+		return true, nil 
+	end
+	
 	local x = tonumber(values[1])
 	local y = tonumber(values[2])
 	local z = tonumber(values[3])
+	
 	if x == nil or y == nil or z == nil then
 		return false, nil
 	else		
@@ -76,6 +81,10 @@ end
 
 function OnTurtleTransformChanged()
 	print("I Changed!")
+end
+
+function OnRefuelRequired()
+	print("Requires Refuel")
 end
 
 function Main()
@@ -89,7 +98,8 @@ function Main()
 	end
 	
 	myTurtle:OnTransformChanged(OnTurtleTransformChanged)
-	myTurlte:MoveForward()
+	myTurtle:OnRefuelRequired(OnRefuelRequired)
+	myTurtle:MoveForward()
 	
 	print(myTurtle)
 	print(boxBounds)

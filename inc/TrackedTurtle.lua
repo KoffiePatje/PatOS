@@ -9,17 +9,22 @@ local TrackedTurtle = {
 	-- Movement --
 	--------------
 	MoveInternal =  function(self, direction, moveFunc, inspectFunc, digFunc, attackFunc)
+		self:CheckFuelLevels(1)
+		
 		while not moveFunc() do
+			self:CheckFuelLevels(1)
+	
 			if inspectFunc() then
 				digFunc()
 			else
 				attackFunc()
 			end
+			
 			sleep(0.1)
 		end
 		
 		self.position = self.position + direction
-		if not self.OnTransformChanged == nil then self.OnTransformChanged() end
+		self:__InvokeTransformChanged()
 	end,
 	
 	MoveUp = function(self)
@@ -58,9 +63,11 @@ local TrackedTurtle = {
 		local dirx = round( self.rotation.x * math.cos( radians ) - self.rotation.z * math.sin( radians ) )
 		local dirz = round( self.rotation.x * math.sin( radians ) + self.rotation.z * math.cos( radians ) )
 		
+		self:CheckFuelLevels(1)
+		
 		if turnFunc() then
 			dir = vector.new( dirx, 0, dirz )
-			if not self.OnTransformChanged == nil then self.OnTransformChanged() end
+			self:__InvokeTransformChanged()
 			return true
 		end
 	   
@@ -87,6 +94,25 @@ local TrackedTurtle = {
 		end
 	end,
 	
+	---------------------
+	-- Fuel Management --
+	---------------------
+	CheckFuelLevels = function(self, minimalAmount)
+		local amount = minimalAmount or 1
+		if turtle.getFuelLevel() < minimalAmount then
+			self:__InvokeRefuelRequired()
+		end
+	end,
+	
+	Refuel = function(self, slot, maxConsumeAmount)
+		local consumeAmount = maxConsumeAmount or 99999
+		turtle.select(slot)
+		
+		while turtle.getItemCount(slot) > 0 and turtle.getFuelLevel() < (turtle.getFuelLimit() - 1000) and consumeAmount > 0 and turtle.refuel() do -- 1000 is max fuel item
+			consumeAmount--
+		end
+	end,
+	
 	----------
 	-- Misc --
 	----------
@@ -99,6 +125,18 @@ local TrackedTurtle = {
 	------------
 	OnTransformChanged = function(self, callback)
 		self.OnTransformChangedCallback = callback
+	end,
+	
+	__InvokeTransformChanged = function(self)
+		if not self.OnTransformChangedCallback == nil then self.OnTransformChangedCallback() end
+	end,
+	
+	OnRefuelRequired = function(self, callback)
+		self.OnRefuelRequiredCallback = callback
+	end,
+	
+	__InvokeRefuelRequired = function(self)
+		if not self.OnRefuelRequiredCallback == nil then self.OnRefuelRequiredCallback() end
 	end
 }
 
