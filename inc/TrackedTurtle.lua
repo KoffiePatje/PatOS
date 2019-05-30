@@ -123,11 +123,17 @@ local TrackedTurtle = {
 	-- Inventory Management --
 	--------------------------
 	__HasRoomForBlock = function(self, compareFunc)
+		local previousSlot = i
 		for i=1, 16 do 
+			trutle.select(i)
 			if turtle.getItemCount(i) == 0 or (compareFunc(i) and (turtle.getItemSpace(i) > 0)) then
+				turtle.select(previousSlot)
 				return true
 			end
 		end
+		
+		turtle.select(previousSlot)
+		return false
 	end,
 	
 	HasFreeSlot = function(self) 
@@ -154,7 +160,7 @@ local TrackedTurtle = {
 	-- Mining Utility --
 	--------------------
 	__Dig = function(self, digFunc, inventoryCheckFunc) 
-		while not self:inventoryCheckFunc() do
+		while not inventoryCheckFunc(self) do
 			self.onNoRoomForNextBlock:Invoke(self)
 		end
 		
