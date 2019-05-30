@@ -64,10 +64,7 @@ end
 
 function GetBoxBoundsFromCLA()
 	local values = CLAUtil.GetArgumentValues("-box", 3)
-	
-	print(values[1])
-	print(values[2])
-	print(values[3])
+	return PVector3.New(values[1], values[2], values[3])
 end
 
 function Main()

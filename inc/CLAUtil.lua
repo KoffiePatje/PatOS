@@ -6,6 +6,7 @@ local args = {}
 local argsNameToIndex = {}
 
 function SetArguments(arguments)
+	args = arguments
 	for i=1, #args do 
 		argsNameToIndex[args[i]] = i
 	end
