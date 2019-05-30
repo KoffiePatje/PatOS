@@ -136,11 +136,11 @@ function MineLayer(cornerPosA, cornerPosB, mineUp, mineDown)
 	if not (myTurtle.position.x == minX or myTurtle.position.x == maxX) then error("At least one of the corners should share the same X coordinate") end
 	if not (myTurtle.position.z == minZ or myTurtle.position.z == maxZ) then error("At least one of the corners should share the same Z coordinate") end
 	
-	local targetX
-	if myTurtle.position.x == minX then targetX = maxX else targetX = minX end
+	local targetX = (myTurtle.position.x == minX) and maxX or minX
+	local targetZ = (myTurtle.position.z == minZ) and maxZ or minZ
 	
-	local targetZ
-	if myTurtle.position.z == minZ then targetZ = maxZ else targetZ = minZ end
+	print('('..myTurtle.position.x..', '..myTurtle.postion.z..')')
+	print('('..targetX..', '..targetZ..')')
 	
 	local targetDirectionX = MathUtil.Clamp(targetX - myTurtle.position.x, -1, 1)
 	local targetDirectionZ = MathUtil.Clamp(targetZ - myTurtle.position.z, -1, 1)
