@@ -72,9 +72,9 @@ end
 function OnTurtleRefuelRequired(turtle)
 	while not turtle:HasFuel() do 
 		turtle:Refuel(16)
-		if not turle:HasFuel() then
+		if not turtle:HasFuel() then
 			print("Couldn't refuel, please supply fuel in slot 16 and then press C to retry")
-			Input.WaitForKey('c')
+			Input.WaitForKey(keys.c)
 		end
 	end
 end
@@ -146,7 +146,7 @@ function MineLayer(cornerPosA, cornerPosB, mineUp, mineDown)
 	local targetDirectionZ = MathUtil.Clamp(targetZ - myTurtle.position.z, -1, 1)
 	
 	-- Let's prefer the X direction
-	myTurtle.RotateTo(PVector3.New(targetDirectionX, 0, 0))
+	myTurtle:RotateTo(PVector3.New(targetDirectionX, 0, 0))
 	local rowLength = maxX - minX + 1; -- We count the current position aswell
 	local rowCount = maxZ - minZ + 1;
 	

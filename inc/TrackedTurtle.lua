@@ -105,7 +105,7 @@ local TrackedTurtle = {
 	
 	HasFuel = function(self, minimalAmount)
 		minimalAmount = minimalAmount or 1
-		return turtle.getFuelLevel() < minimalAmount
+		return turtle.getFuelLevel() > minimalAmount
 	end,
 	
 	Refuel = function(self, slot, maxConsumeAmount)
