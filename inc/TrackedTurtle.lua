@@ -154,7 +154,7 @@ local TrackedTurtle = {
 	-- Mining Utility --
 	--------------------
 	__Dig = function(self, digFunc, inventoryCheckFunc) 
-		while not inventoryCheckFunc(self) do
+		while not self:inventoryCheckFunc() do
 			self.onNoRoomForNextBlock:Invoke(self)
 		end
 		
@@ -162,15 +162,15 @@ local TrackedTurtle = {
 	end,
 	
 	DigForward = function(self) 
-		self:__Dig(turtle.dig, TrackedTurtle.HasRoomForBlockInFront)
+		self:__Dig(turtle.dig, self.HasRoomForBlockInFront)
 	end,
 	
 	DigUp = function(self)
-		self:__Dig(turtle.digUp, TrackedTurtle.HasRoomForBlockAbove)
+		self:__Dig(turtle.digUp, self.HasRoomForBlockAbove)
 	end,
 	
 	DigDown = function(self)
-		self:__Dig(turtle.digDown, TrackedTurtle.HasRoomForBlockBelow)
+		self:__Dig(turtle.digDown, self.HasRoomForBlockBelow)
 	end,
 	
 	----------
