@@ -28,11 +28,11 @@ local TrackedTurtle = {
 	end,
 	
 	MoveUp = function(self)
-		self:__Move(PVector3.new(0, 1, 0), turtle.up, turtle.detectUp, self.DigUp, turtle.attackUp)
+		self:__Move(PVector3.New(0, 1, 0), turtle.up, turtle.detectUp, self.DigUp, turtle.attackUp)
 	end,
 	
 	MoveDown = function(self)
-		self:__Move(PVector3.new(0, -1, 0), turtle.down, turtle.detectDown, self.DigDown, turtle.attackDown)
+		self:__Move(PVector3.New(0, -1, 0), turtle.down, turtle.detectDown, self.DigDown, turtle.attackDown)
 	end,
 	
 	MoveForward = function(self)
