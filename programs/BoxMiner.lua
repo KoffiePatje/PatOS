@@ -72,9 +72,9 @@ function Main()
 	
 	print(myTurtle)
 	print(boxBounds)
-	
-	myTurtle:OnTransformChanged(OnTurtleTransformChanged)
-	myTurtle:OnRefuelRequired(OnTurtleRefuelRequired)
+		
+	myTurtle.onTransformChanged:Subscribe(OnTurtleTransformChanged)
+	myTurtle.onRefuelRequired:Subscribe(OnTurtleRefuelRequired)
 	
 	print('Moving Forward')
 	myTurtle:MoveForward()

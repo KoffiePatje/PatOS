@@ -3,6 +3,7 @@
 ---------------------------------
 
 API.Load("PVector3")
+API.Load("Event")
 
 local TrackedTurtle = { 
 	--------------
@@ -22,7 +23,7 @@ local TrackedTurtle = {
 		end
 		
 		self.position = self.position + direction
-		self:__InvokeTransformChanged()
+		self.onTransformChanged:Invoke()
 	end,
 	
 	MoveUp = function(self)
@@ -63,7 +64,7 @@ local TrackedTurtle = {
 		
 		if turnFunc() then
 			dir = vector.new( dirx, 0, dirz )
-			self:__InvokeTransformChanged()
+			self.onTransformChanged:Invoke()
 			return true
 		end
 	   
@@ -97,7 +98,7 @@ local TrackedTurtle = {
 		local amount = minimalAmount or 1
 		if turtle.getFuelLevel() < minimalAmount then
 			print('Not Enough Fuel')
-			self:__InvokeRefuelRequired()
+			self.onRefuelRequired:Invoke()
 		end
 	end,
 	
@@ -119,29 +120,6 @@ local TrackedTurtle = {
 	ToString = function(self) 
 		return '[pos: ' .. self.position:ToString() .. ', rot: ' .. self.rotation:ToString() .. ']'
 	end,
-	
-	------------
-	-- Events --
-	------------
-	OnTransformChanged = function(self, callback)
-		self:onTransformChangedCallback = callback
-	end,
-	
-	__InvokeTransformChanged = function(self)
-		if not (self.onTransformChangedCallback == nil) then 
-			self.onTransformChangedCallback() 
-		end
-	end,
-	
-	OnRefuelRequired = function(self, callback)
-		self:onRefuelRequiredCallback = callback
-	end,
-	
-	__InvokeRefuelRequired = function(self)
-		if not (self.onRefuelRequiredCallback == nil) then 
-			self.onRefuelRequiredCallback() 
-		end
-	end
 }
 
 local TrackedTurtleMetatable = {
@@ -153,17 +131,23 @@ function New(startPosition, startRotation, refuelRequiredCallback, transformChan
 	local trackedTurtle = {
 		position = startPosition or PVector3.New(0, 0, 0),
 		rotation = startRotation or PVector3.New(0, 0, 1),
-		onRefuelRequiredCallback = refuelRequiredCallback or nil,
-		onTransformChangedCallback = transformChangedCallback or nil
+		onRefuelRequired = Event.New(),
+		onTransformChanged = Event.New()
 	}
 	setmetatable(trackedTurtle, TrackedTurtleMetatable)
+	
+	if not (refuelRequiredCallback == nil) then trackedTurtle.onRefuelRequired:Subscribe(refuelRequiredCallback) end
+	if not (transformChangedCallback == nil) then trackedTurtle.onTransformChanged:Subscribe(transformChangedCallback) end
+	
 	return trackedTurtle
 end
 
 function FromTable(t) 
 	local trackedTurtle = {
 		position = PVector3.FromTable(t.position) or PVector3.New(0, 0, 0),
-		rotation = PVector3.FromTable(t.rotation) or PVector3.New(0, 0, 1)
+		rotation = PVector3.FromTable(t.rotation) or PVector3.New(0, 0, 1),
+		refuelRequiredCallback = Event.New(),
+		transformChangedCallback = Event.New()
 	}
 	setmetatable(trackedTurtle, nil)
 	setmetatable(trackedTurtle, TrackedTurtleMetatable)
