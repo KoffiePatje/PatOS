@@ -197,13 +197,13 @@ function __CreateObject(pos, rot)
 end
 
 function New(startPosition, startRotation)
-	local trackedTurtle = TrackedTurtle.__CreateObject(startPosition, startRotation);
+	local trackedTurtle = __CreateObject(startPosition, startRotation);
 	setmetatable(trackedTurtle, TrackedTurtleMetatable)
 	return trackedTurtle
 end
 
 function FromTable(t) 
-	local trackedTurtle = TrackedTurtle.__CreateObject(t.position, t.rotation)
+	local trackedTurtle = __CreateObject(t.position, t.rotation)
 	setmetatable(trackedTurtle, nil)
 	setmetatable(trackedTurtle, TrackedTurtleMetatable)
 	return trackedTurtle
