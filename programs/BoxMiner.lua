@@ -74,6 +74,10 @@ function TryGetBoxBoundsFromCLA()
 	end
 end
 
+function OnTurtleTransformChanged()
+	print("I Changed!")
+end
+
 function Main()
 	-- Create/Retrieve TrackedTurtle
 	local myTurtle = InitializeTurtle()
@@ -84,7 +88,8 @@ function Main()
 		boxBounds = GetBoxBoundsFromInput()
 	end
 	
-	
+	myTurtle:OnTransformChanged(OnTurtleTransformChanged)
+	myTurlte:MoveForward()
 	
 	print(myTurtle)
 	print(boxBounds)
