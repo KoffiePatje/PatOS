@@ -125,7 +125,8 @@ function MineRow(forwardLength, mineUp, mineDown)
 end
 
 function MineLayer(cornerPosA, cornerPosB, mineUp, mineDown)
-	if not myTurtle.position.y == bounds.y then error("Same Y level expected...") end
+	if not (cornerPosA.y == cornerPosB.y) then error ("Same Y level expected for both input corners") end
+	if not (myTurtle.position.y == cornerPosA.y) then error("Same Y level expected for the turtle and the corners...") end
 	
 	local minX = math.min(cornerPosA.x, cornerPosB.x)
 	local minZ = math.min(cornerPosA.z, cornerPosB.z)
@@ -163,7 +164,7 @@ function MineLayer(cornerPosA, cornerPosB, mineUp, mineDown)
 end
 
 function MineBox(cornerPosA, cornerPosB)
-	if not (myTurtle.position == cornerPosA) or not (myTurtle.position == cornerPosB) then error("None of the start corners relate to our current position") end
+	if not (myTurtle.position == cornerPosA) and not (myTurtle.position == cornerPosB) then error("None of the start corners relate to our current position") end
 	local targetCorner = (myTurtle.position == cornerPosA) and cornerPosA or cornerPosB
 	
 	-- Bounds are always relative
@@ -190,7 +191,7 @@ function MineBox(cornerPosA, cornerPosB)
 		-- Let's start mining the Layer
 		local mineDown = ((desiredY - 1) >= minY)
 		local mineUp = ((desiredY + 1) <= maxY)
-		MineLayer(PVector3.New(cornerPosA.x, desiredY, cornerPosA.z), PVector.New(cornerPosB.x, desiredY, cornerPosB.z), mineUp, mineDown)
+		MineLayer(PVector3.New(cornerPosA.x, desiredY, cornerPosA.z), PVector3.New(cornerPosB.x, desiredY, cornerPosB.z), mineUp, mineDown)
 	end
 end
 
