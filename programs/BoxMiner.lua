@@ -193,6 +193,9 @@ function MineBox(cornerPosA, cornerPosB)
 	end
 end
 
+-------------
+-- Startup --
+-------------
 function Main()
 	-- Create/Retrieve TrackedTurtle
 	local myTurtle = InitializeTurtle()
