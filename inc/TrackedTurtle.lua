@@ -61,11 +61,11 @@ local TrackedTurtle = {
 	-- Rotation --
 	--------------
 	__Rotate = function(self, radians, turnFunc) 
-		local dirx = MathUtil.Round( self.rotation.x * math.cos( radians ) - self.rotation.z * math.sin( radians ) )
-		local dirz = MathUtil.Round( self.rotation.x * math.sin( radians ) + self.rotation.z * math.cos( radians ) )
+		local dirX = MathUtil.Round( self.rotation.x * math.cos( radians ) - self.rotation.z * math.sin( radians ) )
+		local dirZ = MathUtil.Round( self.rotation.x * math.sin( radians ) + self.rotation.z * math.cos( radians ) )
 		
 		if turnFunc() then
-			dir = vector.new( dirx, 0, dirz )
+			rotation = PVector3.New(dirX, 0, dirZ)
 			self.onTransformChanged:Invoke(self)
 			return true
 		end
