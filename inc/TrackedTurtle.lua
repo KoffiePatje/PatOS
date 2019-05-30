@@ -83,7 +83,7 @@ local TrackedTurtle = {
 
 	RotateTo = function(self, targetRotation)
 		targetRotation = PVector3.New(MathUtil.Clamp(targetRotation.x, -1, 1), 0, MathUtil.Clamp(targetRotation.z, -1, 1))
-		while not (self.rotation.x == targetRotation.x and self.rotation.z == target.rotation.z) do
+		while not (self.rotation.x == targetRotation.x and self.rotation.z == targetRotation.z) do
 			local cross = self.rotation:Cross(targetRotation)
 			if cross.y >= 0 then 
 				self:RotateRight() 
