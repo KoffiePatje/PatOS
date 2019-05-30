@@ -92,17 +92,17 @@ function Mine(mineUp, mineDown, mineForward)
 	repeat
 		didDigSomething = false
 		
-		if mineDown and myTurtle:CanDigDown() then
+		if mineDown and myTurtle:CanMineDown() then
 			myTurtle:DigDown()
 			didDigSomething = true
 		end
 		
-		if mineUp and myTurtle:CanDigUp() then
+		if mineUp and myTurtle:CanMineUp() then
 			myTurtle:DigUp()
 			didDigSomething = true
 		end
 		
-		if mineForward and myTurtle:CanDigForward() then
+		if mineForward and myTurtle:CanMineForward() then
 			myTurtle:DigFoward()
 			didDigSomething = true
 		end
@@ -183,7 +183,7 @@ function MineBox(cornerPosA, cornerPosB)
 		local desiredY = MathUtil.Clamp(((i - 1) * (yDirection * 3)) + yDirection, minY, maxY)
 		
 		-- Let's move to that Y
-		while not myTurtle.position.y == desiredY do
+		while not (myTurtle.position.y == desiredY) do
 			Mine(true, false, false)
 			if yDirection > 0 then myTurtle.MoveUp() else myTurtle.MoveDown() end
 		end
