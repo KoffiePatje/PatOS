@@ -168,7 +168,7 @@ function MineBox(cornerPosA, cornerPosB)
 	local targetCorner = (myTurtle.position == cornerPosA) and cornerPosA or cornerPosB
 	
 	-- Bounds are always relative
-	local yDelta = (cornerPosB.y - cornerPosA.y);
+	local yDelta = (targetCorner.y - myTurtle.position.y);
 	local yDistance = math.abs(yDelta)
 	local yDirection = MathUtil.Clamp(yDelta, -1, 1)
 	
@@ -180,12 +180,12 @@ function MineBox(cornerPosA, cornerPosB)
 	
 	for i=1, ySteps do
 		-- Compute the desired Y
-		local desiredY = MathUtil.Clamp(((ySteps - 1) * (yDirection * 3)) + yDirection, minY, maxY)
+		local desiredY = MathUtil.Clamp(((i - 1) * (yDirection * 3)) + yDirection, minY, maxY)
 		
 		-- Let's move to that Y
 		while not myTurtle.position.y == desiredY do
 			Mine(true, false, false)
-			myTurtle:MoveTo(PVector3.New(myTurle.position.x, myTurtle.position.y + yDirection, myTurtle.position.z))
+			if yDirection > 0 then myTurtle.MoveUp() else myTurtle.MoveDown() end
 		end
 		
 		-- Let's start mining the Layer
