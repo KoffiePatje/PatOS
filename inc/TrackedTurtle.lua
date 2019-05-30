@@ -40,7 +40,6 @@ local TrackedTurtle = {
 	end,
 	
 	MoveTo = function(self, targetPosition)
-		while self.position.y < targetPosition.y do self:MoveUp() end
 		while self.position.y > targetPosition.y do self:MoveDown() end
 		
 		if not (self.position.x == targetPosition.x) then
@@ -54,6 +53,8 @@ local TrackedTurtle = {
 			self:RotateTo(direction)
 			while not (self.position.z == target.position.z) do self:MoveForward() end
 		end
+		
+		while self.position.y < targetPosition.y do self:MoveUp() end
 	end,
 	
 	--------------
