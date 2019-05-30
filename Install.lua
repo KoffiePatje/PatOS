@@ -76,7 +76,7 @@ function GetFilePathWithoutExtension(filePath)
 		end
 	until(i == nil)
 	
-	return string.sub(filePath, 0, lastDotIndex)
+	return string.sub(filePath, 0, lastDotIndex - 1)
 end
 
 
