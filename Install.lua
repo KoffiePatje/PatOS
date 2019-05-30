@@ -67,16 +67,22 @@ end
 
 function GetFilePathWithoutExtension(filePath)
 	local lastDotIndex = string.len(filePath)
+	local dotFound = false
 	local i = -1;
 	
 	repeat
 		i = string.find(filePath, '.', i + 1, true)
 		if not (i == nil) then 
-			lastDotIndex = i 
+			dotFound = true
+			lastDotIndex = i
 		end
 	until(i == nil)
 	
-	return string.sub(filePath, 0, lastDotIndex - 1)
+	if dotFound then
+		return string.sub(filePath, 0, lastDotIndex - 1)
+	else
+		return filePath
+	end
 end
 
 

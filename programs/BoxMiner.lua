@@ -206,13 +206,13 @@ function DropItemsInChest()
 	local currentPosition = myTurtle.position
 	local currentRotation = myTurtle.rotation
 	
-	myTurtle:MoveTo(PVector3.New(0, 0, 0), yDirection)
+	myTurtle:MoveTo(PVector3.New(0, 0, 0), -yDirection)
 	myTurtle:RotateTo(PVector3.New(0, 0, -1))
 	
 	AttemptToFuelWithAnythingFromInventory()
 	AttemptToDropAnythingInInventory()
 	
-	myTurtle:MoveTo(currentPosition, yDirection)
+	myTurtle:MoveTo(currentPosition, -yDirection)
 	myTurtle:RotateTo(currentRotation)
 end
 
@@ -254,7 +254,7 @@ function Main()
 	MineBox(myTurtle.position, myTurtle.position + (boxSize - PVector3.New(1, 1, 1))) --subtract 1 from all directions since we're dealing with size and we count the block that the turtle is currently on
 	
 	-- Let's finish up
-	myTurtle:MoveTo(PVector3.New(0, 0, 0), yDirection)
+	myTurtle:MoveTo(PVector3.New(0, 0, 0), -yDirection)
 	myTurtle:RotateTo(PVector3.New(0, 0, -1))
 	DropItemsInChest()
 	myTurtle:RotateTo(PVector3.New(0, 0, 1))
