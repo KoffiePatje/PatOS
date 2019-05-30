@@ -124,19 +124,19 @@ local TrackedTurtle = {
 	-- Events --
 	------------
 	OnTransformChanged = function(self, callback)
-		self.OnTransformChangedCallback = callback
+		self.onTransformChangedCallback = callback
 	end,
 	
 	__InvokeTransformChanged = function(self)
-		if not self.OnTransformChangedCallback == nil then self.OnTransformChangedCallback() end
+		if not self.onTransformChangedCallback == nil then self.onTransformChangedCallback() end
 	end,
 	
 	OnRefuelRequired = function(self, callback)
-		self.OnRefuelRequiredCallback = callback
+		self.onRefuelRequiredCallback = callback
 	end,
 	
 	__InvokeRefuelRequired = function(self)
-		if not self.OnRefuelRequiredCallback == nil then self.OnRefuelRequiredCallback() end
+		if not self.onRefuelRequiredCallback == nil then self.onRefuelRequiredCallback() end
 	end
 }
 
@@ -145,10 +145,12 @@ local TrackedTurtleMetatable = {
 	__tostring = TrackedTurtle.ToString
 }
 
-function New(startPosition, startRotation)
+function New(startPosition, startRotation, refuelRequiredCallback, transformChangedCallback)
 	local trackedTurtle = {
 		position = startPosition or PVector3.New(0, 0, 0),
 		rotation = startRotation or PVector3.New(0, 0, 1),
+		onRefuelRequiredCallback = refuelRequiredCallback or nil
+		onTransformChangedCallback = transformChangedCallback or nil
 	}
 	setmetatable(trackedTurtle, TrackedTurtleMetatable)
 	return trackedTurtle
