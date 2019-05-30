@@ -3,14 +3,14 @@
 -------------------------
 
 local Event = {
-	Invoke = function(self)
+	Invoke = function(self, context)
 		for i=1, #self.listeners do
 			if self.listeners[i] == nil then
 				print('nil listener found at index '..i)
 				break;
 			end
 			
-			self.listeners[i]();
+			self.listeners[i](context);
 		end
 	end,
 	

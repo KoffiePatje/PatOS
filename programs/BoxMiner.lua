@@ -52,13 +52,13 @@ function TryGetBoxBoundsFromCLA()
 	end
 end
 
-function OnTurtleTransformChanged()
+function OnTurtleTransformChanged(turtle)
 	print("I Changed!")
 end
 
-function OnTurtleRefuelRequired()
+function OnTurtleRefuelRequired(turtle)
 	print("Requires Refuel")
-	myTurtle:Refuel(16)
+	turtle:Refuel(16)
 end
 
 function Main()

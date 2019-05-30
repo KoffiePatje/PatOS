@@ -64,7 +64,7 @@ local TrackedTurtle = {
 		
 		if turnFunc() then
 			dir = vector.new( dirx, 0, dirz )
-			self.onTransformChanged:Invoke()
+			self.onTransformChanged:Invoke(self)
 			return true
 		end
 	   
@@ -98,7 +98,7 @@ local TrackedTurtle = {
 		local amount = minimalAmount or 1
 		if turtle.getFuelLevel() < minimalAmount then
 			print('Not Enough Fuel')
-			self.onRefuelRequired:Invoke()
+			self.onRefuelRequired:Invoke(self)
 		end
 	end,
 	
