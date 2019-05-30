@@ -12,8 +12,6 @@ local TrackedTurtle = {
 		self:CheckFuelLevels(1)
 		
 		while not moveFunc() do
-			self:CheckFuelLevels(1)
-	
 			if inspectFunc() then
 				digFunc()
 			else
@@ -63,8 +61,6 @@ local TrackedTurtle = {
 		local dirx = round( self.rotation.x * math.cos( radians ) - self.rotation.z * math.sin( radians ) )
 		local dirz = round( self.rotation.x * math.sin( radians ) + self.rotation.z * math.cos( radians ) )
 		
-		self:CheckFuelLevels(1)
-		
 		if turnFunc() then
 			dir = vector.new( dirx, 0, dirz )
 			self:__InvokeTransformChanged()
@@ -100,6 +96,7 @@ local TrackedTurtle = {
 	CheckFuelLevels = function(self, minimalAmount)
 		local amount = minimalAmount or 1
 		if turtle.getFuelLevel() < minimalAmount then
+			print('Not Enough Fuel')
 			self:__InvokeRefuelRequired()
 		end
 	end,
