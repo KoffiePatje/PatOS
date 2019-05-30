@@ -65,7 +65,7 @@ end
 function TryGetBoxBoundsFromCLA()
 	local values = CLAUtil.GetArgumentValues("-box", 3)
 	if values == nil then 
-		return true, nil 
+		return false, nil 
 	end
 	
 	local x = tonumber(values[1])

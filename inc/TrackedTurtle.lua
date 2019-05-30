@@ -109,7 +109,7 @@ local TrackedTurtle = {
 		turtle.select(slot)
 		
 		while turtle.getItemCount(slot) > 0 and turtle.getFuelLevel() < (turtle.getFuelLimit() - 1000) and consumeAmount > 0 and turtle.refuel() do -- 1000 is max fuel item
-			consumeAmount--
+			consumeAmount = consumeAmount - 1
 		end
 	end,
 	
