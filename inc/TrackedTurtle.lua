@@ -4,6 +4,7 @@
 
 API.Load("PVector3")
 API.Load("Event")
+API.Load("MathUtil")
 
 local TrackedTurtle = { 
 	--------------
@@ -59,8 +60,8 @@ local TrackedTurtle = {
 	-- Rotation --
 	--------------
 	RotateInternal = function(self, radians, turnFunc) 
-		local dirx = round( self.rotation.x * math.cos( radians ) - self.rotation.z * math.sin( radians ) )
-		local dirz = round( self.rotation.x * math.sin( radians ) + self.rotation.z * math.cos( radians ) )
+		local dirx = MathUtil.Round( self.rotation.x * math.cos( radians ) - self.rotation.z * math.sin( radians ) )
+		local dirz = MathUtil.Round( self.rotation.x * math.sin( radians ) + self.rotation.z * math.cos( radians ) )
 		
 		if turnFunc() then
 			dir = vector.new( dirx, 0, dirz )

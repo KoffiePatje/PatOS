@@ -2,6 +2,8 @@
 -- PatOS - PVector3 Class --
 ----------------------------
 
+API.Load("MathUtil")
+
 local PVector3 = {
 	Add = function (self, other)
 		return PVector3.New(
@@ -56,11 +58,10 @@ local PVector3 = {
 	end,
 	
 	Round = function(self, nTolerance)
-	    nTolerance = nTolerance or 1.0
 		return PVector3.New(
-			math.floor( (self.x + (nTolerance * 0.5)) / nTolerance ) * nTolerance,
-			math.floor( (self.y + (nTolerance * 0.5)) / nTolerance ) * nTolerance,
-			math.floor( (self.z + (nTolerance * 0.5)) / nTolerance ) * nTolerance
+			MathUtil.Round(self.x),
+			MathUtil.Round(self.y),
+			MathUtil.Round(self.z)
 		)
 	end,
 	
