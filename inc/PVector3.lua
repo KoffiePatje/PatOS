@@ -99,7 +99,7 @@ local PVector3Metatable = {
 	__mul = PVector3.Multiply,
 	__div = PVector3.Divide,
 	__unm = PVector3.Negate,
-	__eq = PVector3.Equals
+	__eq = PVector3.Equals,
 	__tostring = PVector3.ToString
 }
 

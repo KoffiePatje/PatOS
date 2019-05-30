@@ -9,6 +9,7 @@ API.Load("MathUtil")
 
 CLAUtil.SetArguments({...})
 
+local myTurtle = nil
 local gpsSupported = false
 
 ----------------
@@ -152,11 +153,11 @@ function MineLayer(cornerPosA, cornerPosB, mineUp, mineDown)
 		MineRow(rowLength, mineUp, mineDown)
 		
 		-- Turn corner
-		if not (i == rowCount)
+		if not (i == rowCount) then
 			local previousXDirection = myTurtle.rotation.x
-			myTurtle.RotateTo(PVector3.New(0, 0, targetDirectionZ)
+			myTurtle:RotateTo(PVector3.New(0, 0, targetDirectionZ))
 			MineRow(2, false, false)
-			myTurtle.RotateTo(PVector3.New(-previousXDirection, 0, 0))
+			myTurtle:RotateTo(PVector3.New(-previousXDirection, 0, 0))
 		end
 	end	
 end
@@ -198,7 +199,7 @@ end
 -------------
 function Main()
 	-- Create/Retrieve TrackedTurtle
-	local myTurtle = InitializeTurtle()
+	myTurtle = InitializeTurtle()
 	
 	-- Get Box Bounds
 	local retrievedBoundsFromCLA, boxBounds = TryGetBoxBoundsFromCLA()

@@ -193,7 +193,7 @@ local TrackedTurtle = {
 	
 	CanMineDown = function(self)
 		return turtle.detectDown() and self:HasRoomForBlockBelow()
-	end
+	end,
 	
 	----------
 	-- Misc --
