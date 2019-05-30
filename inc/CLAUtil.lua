@@ -2,14 +2,14 @@
 -- PatOS - Command Line Argument Utility Class --
 -------------------------------------------------
 
-local args = {...}
+local args = {}
 local argsNameToIndex = {}
-local argCount = #args
 
-for i=1, #args do 
-	argsNameToIndex[args[i]] = i
+function SetArguments(arguments)
+	for i=1, #args do 
+		argsNameToIndex[args[i]] = i
+	end
 end
-
 
 function GetArgument(index)
 	return args[index]

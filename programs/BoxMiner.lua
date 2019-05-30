@@ -33,6 +33,8 @@ API.Load("GPSUtil")
 API.Load("Input")
 API.Load("CLAUtil")
 
+SetArguments({...})
+
 local gpsSupported = false
 
 function InitializeTurtle()
