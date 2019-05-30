@@ -33,7 +33,7 @@ API.Load("GPSUtil")
 API.Load("Input")
 API.Load("CLAUtil")
 
-SetArguments({...})
+CLAUtil.SetArguments({...})
 
 local gpsSupported = false
 
