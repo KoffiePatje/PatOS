@@ -83,7 +83,7 @@ function OnTurtleTransformChanged()
 	print("I Changed!")
 end
 
-function OnRefuelRequired()
+function OnTurtleRefuelRequired()
 	print("Requires Refuel")
 end
 
@@ -97,12 +97,15 @@ function Main()
 		boxBounds = GetBoxBoundsFromInput()
 	end
 	
-	myTurtle:OnTransformChanged(OnTurtleTransformChanged)
-	myTurtle:OnRefuelRequired(OnRefuelRequired)
-	myTurtle:MoveForward()
-	
 	print(myTurtle)
 	print(boxBounds)
+	
+	myTurtle:OnTransformChanged(OnTurtleTransformChanged)
+	myTurtle:OnRefuelRequired(OnTurtleRefuelRequired)
+	
+	print('Moving Forward')
+	myTurtle:MoveForward()
+	
 end
 
 Main()
