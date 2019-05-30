@@ -24,7 +24,7 @@ local TrackedTurtle = {
 		end
 		
 		self.position = self.position + direction
-		self.onTransformChanged:Invoke()
+		self.onTransformChanged:Invoke(self)
 	end,
 	
 	MoveUp = function(self)
@@ -106,7 +106,7 @@ local TrackedTurtle = {
 	HasFuel = function(self, minimalAmount)
 		minimalAmount = minimalAmount or 1
 		return turtle.getFuelLevel() < minimalAmount
-	end
+	end,
 	
 	Refuel = function(self, slot, maxConsumeAmount)
 		local consumeAmount = maxConsumeAmount or 99999

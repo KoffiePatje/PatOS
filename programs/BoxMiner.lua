@@ -53,7 +53,7 @@ function TryGetBoxBoundsFromCLA()
 end
 
 function OnTurtleTransformChanged(turtle)
-	print("OnMoved: "..turtle);
+	print("Moved "..turtle:ToString());
 end
 
 -- Make sure to refuel when needed, throw error message if out of fuel and keep polling for new fuel each 
