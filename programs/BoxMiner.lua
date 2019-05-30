@@ -61,11 +61,11 @@ function GetBoxBoundsFromInput()
 end
 
 function GetBoxBoundsFromCLA()
-	local x, y, z = CLAUtil.GetArgumentValues("-box", 3)
+	local values = CLAUtil.GetArgumentValues("-box", 3)
 	
-	print(x)
-	print(y)
-	print(z)
+	print(values[1])
+	print(values[2])
+	print(values[3])
 end
 
 function Main()
