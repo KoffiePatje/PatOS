@@ -53,12 +53,18 @@ function TryGetBoxBoundsFromCLA()
 end
 
 function OnTurtleTransformChanged(turtle)
-	print("I Changed!")
+	print("OnMoved: "..turtle);
 end
 
+-- Make sure to refuel when needed, throw error message if out of fuel and keep polling for new fuel each 
 function OnTurtleRefuelRequired(turtle)
-	print("Requires Refuel")
-	turtle:Refuel(16)
+	while not turtle:HasFuel() do 
+		turtle:Refuel(16)
+		if not turle:HasFuel() then
+			print("Couldn't refuel, please supply fuel in slot 16 and then press C to retry")
+			Input.WaitForKey('c')
+		end
+	end
 end
 
 function Main()

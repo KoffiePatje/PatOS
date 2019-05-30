@@ -96,12 +96,17 @@ local TrackedTurtle = {
 	-- Fuel Management --
 	---------------------
 	CheckFuelLevels = function(self, minimalAmount)
-		local amount = minimalAmount or 1
-		if turtle.getFuelLevel() < minimalAmount then
+		minimalAmount = minimalAmount or 1
+		if self:HasFuel(minimalAmount) then 
 			print('Not Enough Fuel')
 			self.onRefuelRequired:Invoke(self)
 		end
 	end,
+	
+	HasFuel = function(self, minimalAmount)
+		minimalAmount = minimalAmount or 1
+		return turtle.getFuelLevel() < minimalAmount
+	end
 	
 	Refuel = function(self, slot, maxConsumeAmount)
 		local consumeAmount = maxConsumeAmount or 99999
