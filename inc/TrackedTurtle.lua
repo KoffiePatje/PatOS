@@ -15,7 +15,7 @@ local TrackedTurtle = {
 		
 		while not moveFunc() do
 			if inspectFunc() then
-				digFunc()
+				digFunc(self)
 			else
 				attackFunc()
 			end
@@ -28,15 +28,15 @@ local TrackedTurtle = {
 	end,
 	
 	MoveUp = function(self)
-		self:__Move(PVector3.new(0, 1, 0), turtle.up, turtle.detectUp, turtle.digUp, turtle.attackUp)
+		self:__Move(PVector3.new(0, 1, 0), turtle.up, turtle.detectUp, self.DigUp, turtle.attackUp)
 	end,
 	
 	MoveDown = function(self)
-		self:__Move(PVector3.new(0, -1, 0), turtle.down, turtle.detectDown, turtle.digDown, turtle.attackDown)
+		self:__Move(PVector3.new(0, -1, 0), turtle.down, turtle.detectDown, self.DigDown, turtle.attackDown)
 	end,
 	
 	MoveForward = function(self)
-		self:__Move(self.rotation, turtle.forward, turtle.detect, turtle.dig, turtle.attack)
+		self:__Move(self.rotation, turtle.forward, turtle.detect, self.DigForward, turtle.attack)
 	end,
 	
 	MoveTo = function(self, targetPosition)
@@ -82,6 +82,7 @@ local TrackedTurtle = {
 	end,
 
 	RotateTo = function(self, targetRotation)
+		targetRotation = PVector3.New(MathUtil.Clamp(targetRotation.x, -1, 1), 0, MathUtil.Clamp(targetRotation.z, -1, 1))
 		while not (self.rotation.x == targetRotation.x and self.rotation.z == target.rotation.z) do
 			local cross = self.rotation:Cross(targetRotation)
 			if cross.y >= 0 then 
@@ -123,9 +124,9 @@ local TrackedTurtle = {
 	-- Inventory Management --
 	--------------------------
 	__HasRoomForBlock = function(self, compareFunc)
-		local previousSlot = i
+		local previousSlot = turtle.getSelectedSlot()
 		for i=1, 16 do 
-			trutle.select(i)
+			turtle.select(i)
 			if turtle.getItemCount(i) == 0 or (compareFunc(i) and (turtle.getItemSpace(i) > 0)) then
 				turtle.select(previousSlot)
 				return true
@@ -160,7 +161,7 @@ local TrackedTurtle = {
 	-- Mining Utility --
 	--------------------
 	__Dig = function(self, digFunc, inventoryCheckFunc) 
-		while not inventoryCheckFunc(self) do
+		if not inventoryCheckFunc(self) then
 			self.onNoRoomForNextBlock:Invoke(self)
 		end
 		
@@ -178,6 +179,21 @@ local TrackedTurtle = {
 	DigDown = function(self)
 		self:__Dig(turtle.digDown, self.HasRoomForBlockBelow)
 	end,
+	
+	----------------------
+	-- Block Inspection --
+	----------------------
+	CanMineForward = function(self)
+		return turtle.detect() and self:HasRoomForBlockInFront()
+	end,
+	
+	CanMineUp = function(self)
+		return turtle.detectUp() and self:HasRoomForBlockAbove() 
+	end,
+	
+	CanMineDown = function(self)
+		return turtle.detectDown() and self:HasRoomForBlockBelow()
+	end
 	
 	----------
 	-- Misc --

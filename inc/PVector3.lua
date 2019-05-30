@@ -83,6 +83,10 @@ local PVector3 = {
 		return (self.x * self.x) + (self.y * self.y) + (self.z * self.z)
 	end,
 
+	Equals = function(self, other)
+		return self.x == other.x and self.y == other.y and self.z == other.z
+	end,
+
 	ToString = function(self)
 		return '(' .. self.x .. ', ' .. self.y .. ', ' .. self.z .. ')'
 	end
@@ -95,6 +99,7 @@ local PVector3Metatable = {
 	__mul = PVector3.Multiply,
 	__div = PVector3.Divide,
 	__unm = PVector3.Negate,
+	__eq = PVector3.Equals
 	__tostring = PVector3.ToString
 }
 

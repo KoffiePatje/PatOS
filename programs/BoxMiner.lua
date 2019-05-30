@@ -5,11 +5,15 @@ API.Load("TrackedTurtle")
 API.Load("GPSUtil")
 API.Load("Input")
 API.Load("CLAUtil")
+API.Load("MathUtil")
 
 CLAUtil.SetArguments({...})
 
 local gpsSupported = false
 
+----------------
+-- Initialize --
+----------------
 function InitializeTurtle()
 	local gpsSupported, newTurtle = GPSUtil.TryGetGPSTrackedTurtle(3)
 	if gpsSupported then 
@@ -17,6 +21,10 @@ function InitializeTurtle()
 	else
 		print('GPS not Supported, using local coordinate system!')
 	end
+				
+	newTurtle.onTransformChanged:Subscribe(OnTurtleTransformChanged)
+	newTurtle.onRefuelRequired:Subscribe(OnTurtleRefuelRequired)
+	newTurtle.onNoRoomForNextBlock:Subscribe(OnTurtleNoRoomForNextBlock)
 	
 	return newTurtle
 end
@@ -52,6 +60,9 @@ function TryGetBoxBoundsFromCLA()
 	end
 end
 
+--------------------
+-- Event Handlers --
+--------------------
 function OnTurtleTransformChanged(turtle)
 	print("Moved "..turtle:ToString());
 end
@@ -71,8 +82,115 @@ function OnTurtleNoRoomForNextBlock(turtle)
 	print("No room for next block")
 end
 
-function StartMining()
+------------
+-- Mining --
+------------
+function Mine(mineUp, mineDown, mineForward)
+	local didDigSomething;
+	
+	repeat
+		didDigSomething = false
+		
+		if mineDown and myTurtle:CanDigDown() then
+			myTurtle:DigDown()
+			didDigSomething = true
+		end
+		
+		if mineUp and myTurtle:CanDigUp() then
+			myTurtle:DigUp()
+			didDigSomething = true
+		end
+		
+		if mineForward and myTurtle:CanDigForward() then
+			myTurtle:DigFoward()
+			didDigSomething = true
+		end
+		
+		if didDigSomething then 
+			sleep(0.1) 
+		end
+	until not didDigSomething
+end
 
+function MineRow(forwardLength, mineUp, mineDown)
+	for i=1, forwardLength do
+		local lastRow = (i == forwardLength)
+		Mine(mineUp, mineDown, lastRow) -- Last position we won't mine forward
+		
+		if not lastRow then 
+			myTurtle:Forward() 
+		end
+	end
+end
+
+function MineLayer(cornerPosA, cornerPosB, mineUp, mineDown)
+	if not myTurtle.position.y == bounds.y then error("Same Y level expected...") end
+	
+	local minX = math.min(cornerPosA.x, cornerPosB.x)
+	local minZ = math.min(cornerPosA.z, cornerPosB.z)
+	local maxX = math.min(cornerPosA.x, cornerPosB.x)
+	local maxZ = math.min(cornerPosA.z, cornerPosB.z)
+	
+	if not (myTurtle.position.x == minX or myTurtle.position.x == maxX) then error("At least one of the corners should share the same X coordinate") end
+	if not (myTurtle.position.z == minZ or myTurtle.position.z == maxZ) then error("At least one of the corners should share the same Z coordinate") end
+	
+	local targetX
+	if myTurtle.position.x == minX then targetX = maxX else targetX = minX end
+	
+	local targetZ
+	if myTurtle.position.z == minZ then targetZ = maxZ else targetZ = minZ end
+	
+	local targetDirectionX = MathUtil.Clamp(targetX - myTurtle.position.x, -1, 1)
+	local targetDirectionZ = MathUtil.Clamp(targetZ - myTurtle.position.z, -1, 1)
+	
+	-- Let's prefer the X direction
+	myTurtle.RotateTo(PVector3.New(targetDirectionX, 0, 0))
+	local rowLength = maxX - minX + 1; -- We count the current position aswell
+	local rowCount = maxZ - minZ + 1;
+	
+	for i=1, rowCount do
+		MineRow(rowLength, mineUp, mineDown)
+		
+		-- Turn corner
+		if not (i == rowCount)
+			local previousXDirection = myTurtle.rotation.x
+			myTurtle.RotateTo(PVector3.New(0, 0, targetDirectionZ)
+			MineRow(2, false, false)
+			myTurtle.RotateTo(PVector3.New(-previousXDirection, 0, 0))
+		end
+	end	
+end
+
+function MineBox(cornerPosA, cornerPosB)
+	if not (myTurtle.position == cornerPosA) or not (myTurtle.position == cornerPosB) then error("None of the start corners relate to our current position") end
+	local targetCorner = (myTurtle.position == cornerPosA) and cornerPosA or cornerPosB
+	
+	-- Bounds are always relative
+	local yDelta = (cornerPosB.y - cornerPosA.y);
+	local yDistance = math.abs(yDelta)
+	local yDirection = MathUtil.Clamp(yDelta, -1, 1)
+	
+	local minY = math.min(cornerPosA.y, cornerPosB.y)
+	local maxY = math.max(cornerPosA.y, cornerPosB.y)
+	
+	-- Compute the numbers of steps we have to take
+	local ySteps = math.floor((yDistance + 2) / 3)
+	
+	for i=1, ySteps do
+		-- Compute the desired Y
+		local desiredY = MathUtil.Clamp(((ySteps - 1) * (yDirection * 3)) + yDirection, minY, maxY)
+		
+		-- Let's move to that Y
+		while not myTurtle.position.y == desiredY do
+			Mine(true, false, false)
+			myTurtle:MoveTo(PVector3.New(myTurle.position.x, myTurtle.position.y + yDirection, myTurtle.position.z))
+		end
+		
+		-- Let's start mining the Layer
+		local mineDown = ((desiredY - 1) >= minY)
+		local mineUp = ((desiredY + 1) <= maxY)
+		MineLayer(PVector3.New(cornerPosA.x, desiredY, cornerPosA.z), PVector.New(cornerPosB.x, desiredY, cornerPosB.z), mineUp, mineDown)
+	end
 end
 
 function Main()
@@ -84,13 +202,9 @@ function Main()
 	if not retrievedBoundsFromCLA then
 		boxBounds = GetBoxBoundsFromInput()
 	end
-			
-	myTurtle.onTransformChanged:Subscribe(OnTurtleTransformChanged)
-	myTurtle.onRefuelRequired:Subscribe(OnTurtleRefuelRequired)
-	myTurtle.onNoRoomForNextBlock:Subscribe(OnTurtleNoRoomForNextBlock)
-		
-	myTurtle:DigForward()
 	
+	-- Let's start mining that sucker!
+	MineBox(myTurtle.position, myTurtle.position + boxBounds)
 end
 
 Main()
