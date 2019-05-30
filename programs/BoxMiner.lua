@@ -58,6 +58,7 @@ end
 
 function OnTurtleRefuelRequired()
 	print("Requires Refuel")
+	myTurtle:Refuel(16)
 end
 
 function Main()

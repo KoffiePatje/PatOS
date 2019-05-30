@@ -12,13 +12,13 @@ local Event = {
 			
 			self.listeners[i]();
 		end
-	end
+	end,
 	
 	Subscribe = function(self, listener)
 		if not self.listeners[listener] then 
 			table.insert(self.listeners, listener)
 		end
-	end
+	end,
 	
 	Unsubscribe = function(self, listener)
 		for i=1, #self.listeners do
@@ -32,16 +32,16 @@ local Event = {
 	end
 }
 
-local EventMetatable {
+local EventMetatable = {
 	__index = Event
 	--__add = Subscribe
 	--__sub = Unsubscribe
 }
 
-local New() {	
+function New()	
 	local e = {
 		listeners = {}
 	}
 	setmetatable(e, EventMetatable)
 	return e
-}
+end
