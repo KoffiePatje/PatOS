@@ -106,11 +106,14 @@ local TrackedTurtle = {
 	
 	Refuel = function(self, slot, maxConsumeAmount)
 		local consumeAmount = maxConsumeAmount or 99999
+		local previousSelectedSlot = turtle.getSelectedSlot()
 		turtle.select(slot)
 		
 		while turtle.getItemCount(slot) > 0 and turtle.getFuelLevel() < (turtle.getFuelLimit() - 1000) and consumeAmount > 0 and turtle.refuel() do -- 1000 is max fuel item
 			consumeAmount = consumeAmount - 1
 		end
+		
+		turtle.select(previousSelectedSlot)
 	end,
 	
 	----------
