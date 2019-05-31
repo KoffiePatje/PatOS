@@ -103,26 +103,25 @@ local PVector3Metatable = {
 	__tostring = PVector3.ToString
 }
 
-function New(x, y, z)
-	local v = {
+function __CreateObject(x, y, z)
+	return {
 		x = tonumber(x) or 0,
 		y = tonumber(y) or 0,
 		z = tonumber(z) or 0
 	}
+end
+
+function New(x, y, z)
+	local v = __CreateObject(x, y, z)
 	setmetatable(v, PVector3Metatable)
 	return v
 end
 
 function FromTable(t) 
-	local v = {
-		x = tonumber(t.x) or 0,
-		y = tonumber(t.y) or 0,
-		z = tonumber(t.z) or 0
-	}
+	local v = __CreateObject(t.x, t.y, t.z)
 	setmetatable(v, nil)
 	setmetatable(v, PVector3Metatable)
 	return v;
 end
-
 
 

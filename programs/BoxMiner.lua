@@ -13,6 +13,8 @@ local myTurtle = nil
 local gpsSupported = false
 local yDirection = nil
 local droppingToChest = false
+local startPosition = nil
+local startRotation = nil
 
 ----------------
 -- Initialize --
@@ -212,8 +214,8 @@ function DropItemsInChest()
 	local currentPosition = myTurtle.position
 	local currentRotation = myTurtle.rotation
 	
-	myTurtle:MoveTo(PVector3.New(0, 0, 0), -yDirection)
-	myTurtle:RotateTo(PVector3.New(0, 0, -1))
+	myTurtle:MoveTo(startPosition, -yDirection)
+	myTurtle:RotateTo(-startRotation)
 	
 	AttemptToFuelWithAnythingFromInventory()
 	AttemptToDropAnythingInInventory()
@@ -256,14 +258,16 @@ function Main()
 		boxSize = GetBoxSizeFromInput()
 	end
 	
+	startPosition = myTurtle.position
+	startRotation = myTurtle.rotation
+	
 	-- Let's start mining that sucker!
 	MineBox(myTurtle.position, myTurtle.position + (boxSize - PVector3.New(1, 1, 1))) --subtract 1 from all directions since we're dealing with size and we count the block that the turtle is currently on
 	
 	-- Let's finish up
-	myTurtle:MoveTo(PVector3.New(0, 0, 0), -yDirection)
-	myTurtle:RotateTo(PVector3.New(0, 0, -1))
+	myTurtle:MoveTo(startPosition, -yDirection)
 	DropItemsInChest()
-	myTurtle:RotateTo(PVector3.New(0, 0, 1))
+	myTurtle:RotateTo(startRotation)
 end
 
 Main()

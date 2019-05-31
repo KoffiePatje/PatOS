@@ -21,7 +21,7 @@ function GetArgumentValue(identifier)
 	
 	if argIndex == nil then return nil end
 	
-	return args[argIndex]
+	return args[argIndex + 1]
 end
 
 function GetArgumentValues(identifier, count)

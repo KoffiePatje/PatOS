@@ -1,21 +1,34 @@
-function WaitForKey( key )
-    while true do
-        local event, param = os.pullEvent( "key" )
-        if ( event == "key" ) and ( param == key ) then
-            break
-        end
-    end
+function IsKeyPressed(key)
+	local event, param = os.pullEvent( "key" )
+	return (( event == "key" ) and ( param == key ))
 end
 
-function WaitForKeys( table_of_keys )
-    while true do
-        local event, param = os.pullEvent( "key" )
-        for i=1,#table_of_keys do
-            if param == table_of_keys[i] then
-                return ( table_of_keys[i] )
-            end
-        end
-    end
+function IsKeysPressed(keys)
+	local event, param = os.pullEvent( "key" )
+	
+	if ( event == "key" ) then
+		for i=1, #keys do 
+			if param == keys[i] then 
+				return true 
+			end
+		end
+	end
+	
+	return false
+end
+
+function WaitForKey( key )
+	local isPressed = false
+	repeat
+		isPressed = IsKeyPressed(key)
+	until isPressed
+end
+
+function WaitForKeys( keys )
+	local isPressed = false
+	repeat
+		isPressed = IsKeysPressed(keys)
+	until isPressed
 end
 
 function GetNumberInput()

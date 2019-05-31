@@ -248,10 +248,3 @@ function FromTable(t)
 	setmetatable(trackedTurtle, TrackedTurtleMetatable)
 	return trackedTurtle
 end
-
-
-
-
-
-
-
