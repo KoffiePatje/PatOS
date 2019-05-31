@@ -281,18 +281,23 @@ function DropItemsInChest()
 	
 	myTurtle:MoveTo(startPosition)
 	
-	--AttemptToFuelWithAnythingFromInventory()
+	AttemptToFuelWithAnythingFromInventoryButLogsAndSaplings()
 	AttemptToDropAnythingInInventory()
 	
 	myTurtle:MoveTo(currentPosition)
 	myTurtle:RotateTo(currentRotation)
 end
 
-function AttemptToFuelWithAnythingFromInventory()
+function AttemptToFuelWithAnythingFromInventoryButLogsAndSaplings()
 	local i = 1
-	while i <= 16 and myTurtle:HasRoomForMoreFuel() do
-		myTurtle:Refuel(i)
-		i = i + 1
+	while i <= 15 and myTurtle:HasRoomForMoreFuel() do
+		if turtle.getItemCount(i) > 0 then
+			local itemData = turtle.getItemDetail(i)
+			if not IsLog(itemData) and not IsSapling(itemData.name) then
+				myTurtle:Refuel(i)
+				i = i + 1
+			end
+		end
 	end
 end
 
