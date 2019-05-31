@@ -295,9 +295,10 @@ function AttemptToFuelWithAnythingFromInventoryButLogsAndSaplings()
 			local itemData = turtle.getItemDetail(i)
 			if not IsLog(itemData) and not IsSapling(itemData.name) then
 				myTurtle:Refuel(i)
-				i = i + 1
 			end
 		end
+		
+		i = i + 1
 	end
 end
 
