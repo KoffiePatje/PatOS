@@ -368,7 +368,6 @@ function Main()
 				end
 			elseif event == "timer" and parameter == startNewRoundTimer then
 				print('Timer ran out, starting new round!')
-				print('------------------------------')
 				break
 			end
 		end
