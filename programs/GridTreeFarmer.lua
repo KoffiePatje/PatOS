@@ -86,9 +86,9 @@ end
 -- Make sure to refuel when needed, throw error message if out of fuel and keep polling for new fuel each 
 function OnTurtleRefuelRequired(turtle)
 	while not turtle:HasFuel() do 
-		turtle:Refuel(16)
+		turtle:Refuel(15)
 		if not turtle:HasFuel() then
-			print("Couldn't refuel, please supply fuel in the 16th slot and then press C to retry")
+			print("Couldn't refuel, please supply fuel in the 15th slot and then press C to retry")
 			Input.WaitForKey(keys.c)
 		end
 	end
