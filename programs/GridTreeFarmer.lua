@@ -304,7 +304,13 @@ end
 
 function AttemptToDropAnythingInInventory() 
 	local previousSlot = turtle.getSelectedSlot()
-	for i=1, 15 do
+		
+	while not turtle.detect() do 
+		print("No block in front of the turtle, did you forget to place a chest? Resolve the situation and press C to retry")
+		Input.WaitForKey(keys.c)
+	end
+	
+	for i=1, 14 do
 		if turtle.getItemCount(i) > 0 and turtle.select(i) then
 			while not turtle.dropUp() do
 				print("Couldn't drop item, perhaps the inventory is full, resolve the situation and press C to retry")
@@ -351,7 +357,7 @@ function Main()
 		
 		print('------------------------------')
 		print('Finished round in '..(roundEndTime - roundStartTime)..'s')
-		print('Hold C to start a new round immidiately, or Hold T to exit')
+		print('Hold C to start a new round immediately, or Hold T to exit')
 		print('------------------------------')
 		
 		local startNewRoundTimer = os.startTimer(waitTimeBetweenRoundsInSeconds)

@@ -234,6 +234,12 @@ end
 
 function AttemptToDropAnythingInInventory() 
 	local previousSlot = turtle.getSelectedSlot()
+	
+	while not turtle.detect() do 
+		print("No block in front of the turtle, did you forget to place a chest? Resolve the situation and press C to retry")
+		Input.WaitForKey(keys.c)
+	end
+	
 	for i=1, 16 do
 		if turtle.getItemCount(i) > 0 and turtle.select(i) then
 			while not turtle.drop() do
