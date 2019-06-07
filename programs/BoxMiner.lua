@@ -149,24 +149,39 @@ function MineLayer(cornerPosA, cornerPosB, mineUp, mineDown)
 	
 	local targetX = (myTurtle.position.x == minX) and maxX or minX
 	local targetZ = (myTurtle.position.z == minZ) and maxZ or minZ
-		
+	
+	local distanceX = maxX - minX;
+	local distanceZ = maxZ - minZ;
+	
 	local targetDirectionX = MathUtil.Clamp(targetX - myTurtle.position.x, -1, 1)
 	local targetDirectionZ = MathUtil.Clamp(targetZ - myTurtle.position.z, -1, 1)
 	
+	-- Let's prefer the longest lane direction
+	local targetDirection, turnDirection, rowLength, rowCount
+	if (distanceX >= distanceZ) then
+		targetDirection = PVector3.New(targetDirectionX, 0, 0)
+		turnDirection = PVector3.New(0, 0, targetDirectionZ)
+		rowLength = distanceX + 1
+		rowCount = distanceZ + 1
+	else
+		targetDirection = PVector3.New(0, 0, targetDirectionZ)
+		turnDirection = PVector3.New(targetDirectionX, 0, 0)
+		rowLength = distanceZ + 1
+		rowCount = distanceX + 1
+	end
+	
 	-- Let's prefer the X direction
-	myTurtle:RotateTo(PVector3.New(targetDirectionX, 0, 0))
-	local rowLength = maxX - minX + 1; 
-	local rowCount = maxZ - minZ + 1;
+	myTurtle:RotateTo(targetDirection)
 	
 	for i=1, rowCount do
 		MineRow(rowLength, mineUp, mineDown)
 		
 		-- Turn corner
 		if not (i == rowCount) then
-			local previousXDirection = myTurtle.rotation.x
-			myTurtle:RotateTo(PVector3.New(0, 0, targetDirectionZ))
+			local previousDirection = myTurtle.rotation
+			myTurtle:RotateTo(turnDirection)
 			MineRow(2, false, false)
-			myTurtle:RotateTo(PVector3.New(-previousXDirection, 0, 0))
+			myTurtle:RotateTo(-previousDirection)
 		end
 	end	
 end
