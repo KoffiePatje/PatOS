@@ -66,12 +66,12 @@ local PVector3 = {
 	end,
 	
 	Normalize = function(self)
-		local scalar = 1.0f / self:Length()
+		local scalar = 1.0 / self:Length()
 		self.Mul(scalar)
 	end,
 	
 	Normalized = function(self)
-		local scalar = 1.0f / self:Length()
+		local scalar = 1.0 / self:Length()
 		return PVector3.New(self.x * scalar, self.y * scalar, self.z * scalar)
 	end,
 	

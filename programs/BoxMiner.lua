@@ -231,7 +231,7 @@ function DropItemsInChest()
 	
 	myTurtle:MoveTo(startPosition, -yDirection)
 	myTurtle:RotateTo(-startRotation)
-	
+
 	AttemptToFuelWithAnythingFromInventory()
 	AttemptToDropAnythingInInventory()
 	

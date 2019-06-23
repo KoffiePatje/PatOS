@@ -29,7 +29,7 @@ function GetArgumentValues(identifier, count)
 	
 	if argIndex == nil then return nil end
 	
-	returnValues = {}
+	local returnValues = {}
 	
 	for i=1, count, 1 do
 		table.insert(returnValues, i, args[argIndex + i])

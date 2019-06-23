@@ -61,7 +61,6 @@ function GetTreeFarmGridSizeFromCLA()
 	if not (values == nil) then 
 		grid = PVector2.New(tonumber(values[1]), tonumber(values[2]))
 	else
-		print('false')
 		return false
 	end
 	
@@ -331,7 +330,7 @@ function Main()
 	-- Get Box Bounds
 	local retrievedCLA, grid, spacing = GetTreeFarmGridSizeFromCLA()
 	if not retrievedCLA then
-		boxSize, spacing = GetTreeFarmGridSizeFromInput()
+		grid, spacing = GetTreeFarmGridSizeFromInput()
 	end
 	
 	startPosition = myTurtle.position
